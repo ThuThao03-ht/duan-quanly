@@ -15,11 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $dept = \App\Models\Department::create([
+            'code' => 'KHTTH',
+            'name' => 'Kế hoạch tổng hợp',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::create([
+            'name' => 'admin',
+            'password' => bcrypt('password'),
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'name' => 'department',
+            'password' => bcrypt('password'),
+            'role' => 'department',
+            'department_id' => $dept->id,
         ]);
     }
 }
