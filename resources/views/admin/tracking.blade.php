@@ -404,7 +404,18 @@
                             <div class="editable" data-id="{{ $request->id }}" data-field="reason" placeholder="...">{{ $request->reason }}</div>
                         </td>
                         <td class="p-4">
-                            <div class="text-slate-500 italic">{{ $request->department_note ?: '...' }}</div>
+                            @php
+                                $deptNote = $request->notes->first();
+                            @endphp
+                            <div class="text-slate-500 italic">
+                                @if($deptNote)
+                                    <span title="{{ $deptNote->content }} - {{ $deptNote->created_at->format('d/m/Y H:i') }}">
+                                        {{ \Illuminate\Support\Str::limit($deptNote->content, 50) }}
+                                    </span>
+                                @else
+                                    {{ $request->department_note ?: '...' }}
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     @empty

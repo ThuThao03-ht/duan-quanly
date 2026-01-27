@@ -1,4 +1,4 @@
-@extends('layout.department')
+@extends('layouts.department')
 
 @section('title', 'Chi tiết đơn hàng #' . $order->id . ' - Department Portal')
 
@@ -183,12 +183,7 @@
             </div>
             <h1 class="mb-0" style="font-size: 1.75rem; font-weight: 700; color: #1e293b;">Chi tiết đơn hàng #{{ $order->id }}</h1>
         </div>
-        <button class="btn btn-export">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Xuất file
-        </button>
+        
     </div>
 
     <div class="row g-4">
@@ -262,11 +257,7 @@
             </div>
 
             <!-- Help Card -->
-            <div class="help-card">
-                <h6 style="font-weight: 700; margin-bottom: 0.75rem;">Cần hỗ trợ?</h6>
-                <p style="font-size: 0.875rem; opacity: 0.95; margin-bottom: 1rem;">Nếu bạn gặp khó khăn trong việc xử lý đơn hàng, vui lòng liên hệ bộ phận IT.</p>
-                <button class="btn btn-help">Liên hệ ngay</button>
-            </div>
+
         </div>
 
         <!-- Main Content -->
@@ -308,14 +299,20 @@
                                         {{ strtoupper(substr($note->user->name ?? 'U', 0, 2)) }}
                                     </div>
                                     <div>
-                                        <div style="font-weight: 600; color: #1e293b; font-size: 0.875rem;">{{ $note->user->name ?? 'Unknown' }}</div>
-                                        <div style="font-size: 0.75rem; color: #94a3b8;">{{ $note->created_at->format('d/m/Y H:i') }}</div>
+                                        <div style="font-weight: 600; color: #1e293b; font-size: 0.875rem;">
+                                            @if($note->note_type == 'admin')
+                                                {{ $note->user->name ?? 'Admin' }}
+                                            @else
+                                                {{ $note->user->department->name ?? $note->user->name ?? 'Unknown' }}
+                                            @endif
+                                        </div>
+                                        <div style="font-size: 0.75rem; color: #94a3b8;">{{ $note->created_at->format('d/m/Y H:i:s') }}</div>
                                     </div>
                                 </div>
                                 @if($note->note_type == 'admin')
                                     <span class="badge" style="background: #fee2e2; color: #b91c1c; font-size: 0.75rem;">Admin</span>
                                 @else
-                                    <span class="badge" style="background: #dbeafe; color: #1d4ed8; font-size: 0.75rem;">Department</span>
+                                    <span class="badge" style="background: #dbeafe; color: #1d4ed8; font-size: 0.75rem;">{{ $note->user->department->name ?? 'Department' }}</span>
                                 @endif
                             </div>
                             <p style="color: #475569; margin: 0; font-size: 0.875rem; line-height: 1.5;">{{ $note->content }}</p>

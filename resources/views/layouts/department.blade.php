@@ -15,8 +15,8 @@
     
     <style>
         :root {
-            --primary-color: #4f46e5;
-            --primary-light: #e0e7ff;
+            --primary-color: #2d66eaff;
+            --primary-light: #d4e3faff;
             --sidebar-width: 250px;
         }
         

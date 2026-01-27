@@ -12,7 +12,9 @@ class TrackingController extends Controller
 {
     public function index()
     {
-        $requests = PurchaseRequest::with(['department', 'timeline'])->orderBy('id', 'desc')->get();
+        $requests = PurchaseRequest::with(['department', 'timeline', 'notes' => function($q) {
+            $q->where('note_type', 'department')->orderBy('created_at', 'desc');
+        }])->orderBy('id', 'desc')->get();
         $departments = \App\Models\Department::all();
         return view('admin.tracking', compact('requests', 'departments'));
     }

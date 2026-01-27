@@ -1,4 +1,4 @@
-@extends('layout.department')
+@extends('layouts.department')
 
 @section('title', 'Tổng quan - Department Portal')
 

@@ -1,4 +1,4 @@
-@extends('layout.department')
+@extends('layouts.department')
 
 @section('title', 'Danh sách đơn hàng - Department Portal')
 
