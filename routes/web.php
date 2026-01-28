@@ -25,7 +25,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 });
 
 Route::middleware(['auth', 'role:department'])->prefix('department')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('department.dashboard');
-    })->name('department.dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\Department\DepartmentController::class, 'dashboard'])->name('department.dashboard');
+    Route::get('/orders', [App\Http\Controllers\Department\OrderController::class, 'index'])->name('department.orders.index');
+    Route::get('/orders/{id}', [App\Http\Controllers\Department\OrderController::class, 'show'])->name('department.orders.show');
+    Route::post('/orders/{id}/note', [App\Http\Controllers\Department\OrderController::class, 'addNote'])->name('department.orders.addNote');
+    Route::get('/guide', [App\Http\Controllers\Department\DepartmentController::class, 'guide'])->name('department.guide');
+    Route::get('/change-password', [App\Http\Controllers\Department\DepartmentController::class, 'changePassword'])->name('department.password.change');
+    Route::post('/change-password', [App\Http\Controllers\Department\DepartmentController::class, 'updatePassword'])->name('department.password.update');
 });
