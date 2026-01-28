@@ -60,6 +60,21 @@ class DepartmentController extends Controller
         
         
         
+        
+        // Lấy dữ liệu phân bổ trạng thái cho biểu đồ tròn
+        $statusDistribution = PurchaseRequest::where('department_id', $departmentId)
+            ->selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+            
+        // Đảm bảo đủ các trạng thái chính
+        $statuses = ['Đang xử lý', 'Hoàn thành', 'Từ chối'];
+        $pieChartData = [];
+        foreach ($statuses as $status) {
+            $pieChartData[] = $statusDistribution[$status] ?? 0;
+        }
+
         // Lấy 5 yêu cầu mới nhất của department này
         $recentRequests = PurchaseRequest::with(['department', 'creator'])
             ->where('department_id', $departmentId)
@@ -75,7 +90,8 @@ class DepartmentController extends Controller
             'recentRequests',
             'chartData',
             'selectedYear',
-            'availableYears'
+            'availableYears',
+            'pieChartData'
         ));
     }
 }

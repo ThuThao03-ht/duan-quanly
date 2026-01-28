@@ -35,9 +35,18 @@ class OrderController extends Controller
             });
         }
 
+        // Đếm số lượng theo trạng thái để hiển thị trên tab
+        $processingCount = PurchaseRequest::where('department_id', $departmentId)
+            ->where('status', 'Đang xử lý')
+            ->count();
+            
+        $completedCount = PurchaseRequest::where('department_id', $departmentId)
+            ->where('status', 'Hoàn thành')
+            ->count();
+
         $orders = $query->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('department.orders.index', compact('orders'));
+        return view('department.orders.index', compact('orders', 'processingCount', 'completedCount'));
     }
 
     // Hiển thị chi tiết đơn hàng

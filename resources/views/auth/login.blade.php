@@ -71,12 +71,12 @@
                 @endif
 
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center">
+                    <!-- <div class="flex items-center">
                         <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
                         <label for="remember" class="ml-2 block text-sm text-slate-600 font-medium">Ghi nhớ</label>
                     </div>
                     <a href="#" class="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">Quên mật khẩu?</a>
-                </div>
+                </div> -->
 
                 <button type="submit"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98] focus:ring-4 focus:ring-blue-500/20">
@@ -84,9 +84,7 @@
                 </button>
             </form>
 
-            <div class="pt-6 border-t border-slate-200/50 text-center">
-                <p class="text-sm text-slate-500">Vấn đề kỹ thuật? <a href="#" class="font-semibold text-blue-600 hover:underline">Liên hệ IT</a></p>
-            </div>
+
         </div>
     </div>
 </body>
