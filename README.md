@@ -57,9 +57,8 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Cài đặt thư viện hỗ trợ
 
-
-cài thư viện hỗ trợ 
 composer require maatwebsite/excel
 
 php artisan make:export PurchaseRequestsExport --model=PurchaseRequest
@@ -67,3 +66,19 @@ php artisan make:export PurchaseRequestsExport --model=PurchaseRequest
 php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
 
 dir vendor/maatwebsite/excel
+
+
+## Cài đặt & chạy dự án
+
+composer install
+
+php artisan migrate
+
+php artisan migrate:fresh --seed
+
+php artisan db:seed --class=TrackingSeeder
+
+
+npm install
+
+npm run build

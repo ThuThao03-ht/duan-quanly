@@ -15,6 +15,7 @@ class PurchaseRequest extends Model
         'delivery_note',
         'reason',
         'department_note',
+        'created_at',
     ];
 
     public function department()
