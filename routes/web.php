@@ -26,6 +26,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     // Đổi mật khẩu
     Route::get('/change-password', [ProfileController::class, 'showChangePasswordForm'])->name('admin.change-password');
     Route::post('/change-password', [ProfileController::class, 'updatePassword'])->name('admin.update-password');
+
+    // Hướng dẫn sử dụng
+    Route::get('/instructions', [DashboardController::class, 'instructions'])->name('admin.instructions');
 });
 
 Route::middleware(['auth', 'role:department'])->prefix('department')->group(function () {

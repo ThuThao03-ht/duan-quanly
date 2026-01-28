@@ -85,4 +85,9 @@ class DashboardController extends Controller
             'years'
         ));
     }
+
+    public function instructions()
+    {
+        return view('admin.instructions');
+    }
 }
