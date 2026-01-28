@@ -172,10 +172,10 @@
         <h1 class="guide-title">Hướng dẫn sử dụng Portal</h1>
         <p class="guide-subtitle">Tài liệu hướng dẫn chi tiết các chức năng dành cho Khoa/Phòng giúp bạn quản lý quy trình mua sắm hiệu quả và minh bạch.</p>
         
-        <div class="search-input-wrapper">
+        <!-- <div class="search-input-wrapper">
             <i class="fas fa-search"></i>
             <input type="text" placeholder="Tìm kiếm hướng dẫn (ví dụ: Tạo đơn hàng, Theo dõi tiến độ...)">
-        </div>
+        </div> -->
     </div>
 
     <div class="row">
