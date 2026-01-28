@@ -15,9 +15,9 @@
     
     <style>
         :root {
-            --primary-color: #2d66eaff;
-            --primary-light: #d4e3faff;
-            --sidebar-width: 250px;
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-light: #eff6ff90; /* Blue 50 transparent */
+            --sidebar-width: 260px;
         }
         
         * {
@@ -37,7 +37,7 @@
             width: var(--sidebar-width);
             height: 100vh;
             background: white;
-            border-right: 1px solid #e5e7eb;
+            border-right: 1px solid #f1f5f9;
             display: flex;
             flex-direction: column;
             position: fixed;
@@ -46,58 +46,73 @@
             z-index: 1000;
         }
         
-        .sidebar-logo {
+        .sidebar-logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem 1.5rem;
+        }
+
+        .logo-box {
+            width: 64px;
             height: 64px;
             display: flex;
             align-items: center;
-            padding: 0 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: var(--primary-color);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            margin-right: 12px;
+            margin-bottom: 0.75rem;
+            border-radius: 12px;
+            /* background: #f8fafc; Optional: square bg like mockup */
         }
         
-        .logo-text {
-            font-size: 1.25rem;
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .brand-text {
+            font-size: 0.65rem;
             font-weight: 700;
-            color: #1e293b;
+            color: #0011ffff;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-align: center;
         }
         
         /* Navigation */
         .sidebar-nav {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem 1rem;
+            padding: 1rem 1.5rem;
         }
         
         .menu-label {
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.7rem;
+            font-weight: 700;
             color: #94a3b8;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            padding: 0 1rem;
             margin-bottom: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        
+        .menu-label:first-child {
+            margin-top: 0;
         }
         
         .nav-item {
             display: flex;
             align-items: center;
             padding: 0.75rem 1rem;
-            margin-bottom: 0.25rem;
-            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
             color: #64748b;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.9rem;
             transition: all 0.2s;
+            position: relative;
         }
         
         .nav-item:hover {
@@ -106,20 +121,44 @@
         }
         
         .nav-item.active {
-            background-color: var(--primary-light);
-            color: var(--primary-color);
+            background-color: #eff6ff; /* Light blue bg */
+            color: #2563eb; /* Blue text */
+        }
+        
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 24px;
+            width: 4px;
+            background: #2563eb;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
         }
         
         .nav-item svg {
             width: 20px;
             height: 20px;
             margin-right: 12px;
+            /* opacity: 0.7; */
+        }
+        
+        .nav-item.active svg {
+            opacity: 1;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: #f1f5f9;
+            margin: 1.5rem 0;
         }
         
         /* Sidebar Profile - Fixed at bottom */
         .sidebar-profile {
-            padding: 1rem;
-            border-top: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #f1f5f9;
             background: white;
         }
         
@@ -139,14 +178,14 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            color: #475569;
+            color: #0026ffff;
             margin-right: 12px;
         }
         
         .profile-name {
             font-size: 0.875rem;
             font-weight: 700;
-            color: #1e293b;
+            color: #002affff;
             margin-bottom: 2px;
         }
         
@@ -158,9 +197,9 @@
         .btn-logout {
             width: 100%;
             padding: 0.625rem;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #f0e2e2ff;
             background: white;
-            color: #475569;
+            color: #ff0000ff;
             border-radius: 8px;
             font-weight: 600;
             font-size: 0.875rem;
@@ -169,7 +208,7 @@
             justify-content: center;
             gap: 0.5rem;
             transition: all 0.2s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 2px rgba(245, 214, 214, 1);
         }
         
         .btn-logout:hover {
@@ -190,9 +229,9 @@
         }
         
         .main-header {
-            height: 64px;
+            height: 70px;
             background: white;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -209,34 +248,6 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-        }
-        
-        .btn-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: transparent;
-            color: #94a3b8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: all 0.2s;
-        }
-        
-        .btn-icon:hover {
-            background: #f1f5f9;
-        }
-        
-        .btn-icon .badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 8px;
-            height: 8px;
-            background: #ef4444;
-            border-radius: 50%;
         }
         
         .main-content {
@@ -273,31 +284,48 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <!-- Logo -->
-        <div class="sidebar-logo">
-            <div class="logo-icon">
-                <svg width="20" height="20" fill="none" stroke="white" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
+        <div class="sidebar-logo-container">
+            <div class="logo-box">
+                <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="logo-img">
             </div>
-            <span class="logo-text">Portal</span>
+            <div class="brand-text">BỆNH VIỆN ĐK TÂM TRÍ CAO LÃNH</div>
         </div>
 
         <!-- Navigation -->
         <nav class="sidebar-nav">
-            <div class="menu-label">MENU CHÍNH</div>
+            <div class="menu-label">QUẢN LÝ CHÍNH</div>
             
             <a href="{{ route('department.dashboard') }}" class="nav-item {{ request()->routeIs('department.dashboard') ? 'active' : '' }}">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                   <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
                 </svg>
                 Tổng quan
             </a>
 
             <a href="{{ route('department.orders.index') }}" class="nav-item {{ request()->routeIs('department.orders.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 Quản lý Đơn hàng
+            </a>
+
+            <div class="menu-divider"></div>
+
+            <div class="menu-label">HỆ THỐNG</div>
+
+            <a href="{{ route('department.guide') }}" class="nav-item {{ request()->routeIs('department.guide') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Cài đặt & Hướng dẫn
+            </a>
+
+            <a href="{{ route('department.password.change') }}" class="nav-item {{ request()->routeIs('department.password.change') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                Đổi mật khẩu
             </a>
         </nav>
 
@@ -319,7 +347,7 @@
                 <div class="profile-avatar">{{ $initials }}</div>
                 <div>
                     <div class="profile-name">{{ $profileName }}</div>
-                    <div class="profile-role">Portal Quản lý</div>
+                    <!-- <div class="profile-role">Portal Quản lý</div> -->
                 </div>
             </div>
             <form action="{{ route('logout') }}" method="POST">
@@ -338,7 +366,7 @@
     <div class="main-wrapper">
         <!-- Top Header -->
         <header class="main-header">
-            <h2 class="header-title">Tổng quan Phân tích</h2>
+            <h2 class="header-title">@yield('header-title')</h2>
             <div class="header-actions">
                 <!-- <button class="btn-icon">
                     <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -356,12 +384,7 @@
 
         <!-- Main Scrollable Content -->
         <main class="main-content">
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
+
 
             @if(session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">

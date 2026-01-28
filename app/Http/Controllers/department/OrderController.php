@@ -29,6 +29,8 @@ class OrderController extends Controller
         if ($request->has('search') && $request->search != '') {
             $query->where(function($q) use ($request) {
                 $q->where('content', 'like', '%' . $request->search . '%')
+                  ->orWhere('id', 'like', '%' . $request->search . '%')
+                  ->orWhere('status', 'like', '%' . $request->search . '%')
                   ->orWhereHas('department', function($dept) use ($request) {
                       $dept->where('name', 'like', '%' . $request->search . '%');
                   });
@@ -44,9 +46,11 @@ class OrderController extends Controller
             ->where('status', 'Hoàn thành')
             ->count();
 
+        $allCount = PurchaseRequest::where('department_id', $departmentId)->count();
+
         $orders = $query->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('department.orders.index', compact('orders', 'processingCount', 'completedCount'));
+        return view('department.orders.index', compact('orders', 'processingCount', 'completedCount', 'allCount'));
     }
 
     // Hiển thị chi tiết đơn hàng

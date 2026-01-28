@@ -89,6 +89,10 @@ class TrackingSeeder extends Seeder
             [3, 'Khoa PT GMHS', 'hệ thống phẩu thuật nội soi', '2025-07-08', '2025-07-08', '2025-12-10', '2025-12-22', '2026-01-06', null, 'Hoàn thành', null, 'đã ký hợp đồng', null, null],
             [2, 'Phòng Nội soi', 'van bơm rửa ống nội soi', '2025-11-14', '2025-12-19', '2025-12-19', '2025-12-19', '2025-12-20', '2026-01-02', 'Hoàn thành', '2026-01-05', null, null, null],
             [1, 'HTDV', 'Gia hạn camera cấp cứu', null, '2026-01-14', null, '2026-01-14', null, null, 'Hoàn thành', null, null, null, null],
+            [56, 'PT-GMHS', 'Dữ liệu mẫu năm 2025', '2025-06-15', '2025-06-20', null, null, null, null, 'Hoàn thành', null, null, null, null],
+            [57, 'PT-GMHS', 'Dữ liệu mẫu T6/2025', '2025-06-15', '2025-06-20', null, null, null, null, 'Hoàn thành', null, null, null, null],
+            [58, 'PT-GMHS', 'Dữ liệu mẫu T8/2025', '2025-08-10', '2025-08-12', null, null, null, null, 'Đang xử lý', null, null, null, null],
+            [59, 'PT-GMHS', 'Dữ liệu mẫu T3/2025', '2025-03-05', '2025-03-08', null, null, null, null, 'Hoàn thành', null, null, null, null],
         ];
 
         foreach ($data as $item) {
@@ -105,6 +109,7 @@ class TrackingSeeder extends Seeder
                 'delivery_note' => $item[11],
                 'reason' => $item[12],
                 'department_note' => $item[13],
+                'created_at' => $item[3] ?? $item[4] ?? now(),
             ]);
 
             PrTimeline::create([

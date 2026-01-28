@@ -611,7 +611,7 @@
                 <div class="card-details">
                     <div class="card-label">NGÀY TẠO</div>
                     <div class="card-main-text">{{ $order->created_at->format('d/m/Y') }}</div>
-                    <div class="card-sub-text">{{ $order->created_at->format('H:i') }}</div>
+                    <!-- <div class="card-sub-text">{{ $order->created_at->format('H:i') }}</div> -->
                 </div>
             </div>
         </div>
@@ -778,7 +778,7 @@
                                 <div class="msg-header" style="flex-direction: row-reverse;">
                                     <span class="badge-role">AD</span>
                                     <span class="msg-name">admin</span> <!-- Or $note->user->name -->
-                                    <span class="msg-time">{{ $note->created_at->format('H:i') }}</span>
+                                    <!-- <span class="msg-time">{{ $note->created_at->format('H:i') }}</span> -->
                                 </div>
                                 <div class="msg-bubble">
                                     {{ $note->content }}
@@ -790,7 +790,7 @@
                                 <div class="msg-header">
                                     <div class="avatar-circle avatar-sys">SYS</div>
                                     <span class="msg-name">{{ $note->user->department->name ?? $note->user->name ?? 'Hệ thống' }}</span>
-                                    <span class="msg-time">{{ $note->created_at->format('H:i') }}</span>
+                                    <!-- <span class="msg-time">{{ $note->created_at->format('H:i') }}</span> -->
                                 </div>
                                 <div class="msg-bubble">
                                     {{ $note->content }}
@@ -808,8 +808,8 @@
                             <textarea name="content" class="chat-textarea" placeholder="Nhập tin nhắn hoặc ghi chú..." required></textarea>
                             <div class="chat-tools">
                                 <div class="tool-icons">
-                                    <i class="fas fa-paperclip"></i>
-                                    <i class="far fa-smile"></i>
+                                    <!-- <i class="fas fa-paperclip"></i>
+                                    <i class="far fa-smile"></i> -->
                                 </div>
                                 <button type="submit" class="btn-submit">
                                     <i class="fas fa-paper-plane"></i>

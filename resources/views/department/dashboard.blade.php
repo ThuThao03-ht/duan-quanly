@@ -2,6 +2,8 @@
 
 @section('title', 'Tổng quan - Department Portal')
 
+@section('header-title', 'Tổng quan Phân tích')
+
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -211,10 +213,10 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-2">
-                            <span style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%;"></span>
-                            <span style="font-size: 0.875rem; color: #64748b;">Đã hủy/Từ chối</span>
+                            <!-- <span style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%;"></span> -->
+                            <!-- <span style="font-size: 0.875rem; color: #64748b;">Đã hủy/Từ chối</span> -->
                         </div>
-                        <span style="font-size: 0.875rem; font-weight: 600; color: #1e293b;">{{ $pieChartData[2] }}</span>
+                        <!-- <span style="font-size: 0.875rem; font-weight: 600; color: #1e293b;">{{ $pieChartData[2] }}</span> -->
                     </div>
                 </div>
             </div>
@@ -225,12 +227,20 @@
     <div class="stat-card p-0">
         <div class="p-4 d-flex justify-content-between align-items-center border-bottom">
             <h5 class="mb-0" style="font-weight: 700; color: #1e293b;">Danh sách khách hàng & Đơn hàng</h5>
-            <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2" style="border-radius: 6px;">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                </svg>
-                Tất cả trạng thái
-            </button>
+            <div class="d-flex gap-2">
+                <!-- <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2" style="border-radius: 6px;">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    Tất cả trạng thái
+                </button> -->
+                <a href="{{ route('department.orders.index') }}" class="btn btn-sm btn-primary d-flex align-items-center gap-2" style="border-radius: 6px;">
+                    Xem tất cả
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table mb-0">
@@ -259,7 +269,7 @@
                                 </div>
                                 <div class="d-flex flex-column">
                                     <span style="font-weight: 600; color: #1e293b; font-size: 0.875rem;">{{ $departmentName }}</span>
-                                    <span style="font-size: 0.75rem; color: #94a3b8;"># ORD-{{ str_pad($request->id, 4, '0', STR_PAD_LEFT) }}</span>
+                                    <span style="font-size: 0.75rem; color: #94a3b8;">{{ str_pad($request->id, 4, '0', STR_PAD_LEFT) }}</span>
                                 </div>
                             </div>
                         </td>
@@ -329,8 +339,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <span class="text-muted" style="font-size: 0.875rem;">Hiển thị {{ $recentRequests->count() }} kết quả mới nhất</span>
                 <div class="btn-group">
-                    <button class="btn btn-sm btn-outline-secondary" disabled>Trước</button>
-                    <button class="btn btn-sm btn-outline-secondary" disabled>Sau</button>
+                    <!-- <button class="btn btn-sm btn-outline-secondary" disabled>Trước</button>
+                    <button class="btn btn-sm btn-outline-secondary" disabled>Sau</button> -->
                 </div>
             </div>
         </div>
@@ -349,13 +359,31 @@
             type: 'bar',
             data: {
                 labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
-                datasets: [{
-                    label: 'Đơn hàng',
-                    data: chartData,
-                    backgroundColor: '#4f46e5',
-                    borderRadius: 4,
-                    barThickness: 20
-                }]
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Xu hướng',
+                        data: chartData,
+                        borderColor: '#38bdf8', // Light Blue
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#38bdf8',
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: false,
+                        order: 0
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Đơn hàng',
+                        data: chartData,
+                        backgroundColor: '#4f46e5',
+                        borderRadius: 4,
+                        barThickness: 20,
+                        order: 1
+                    }
+                ]
             },
             options: {
                 responsive: true,
@@ -420,7 +448,19 @@
                         display: false
                     },
                     tooltip: {
-                        enabled: true
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                let value = context.raw;
+                                let total = context.chart._metasets[context.datasetIndex].total;
+                                let percentage = Math.round((value / total) * 100) + '%';
+                                return label + value + ' (' + percentage + ')';
+                            }
+                        }
                     }
                 }
             }

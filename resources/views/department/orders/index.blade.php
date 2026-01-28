@@ -74,12 +74,12 @@
 
     .search-input {
         width: 100%;
-        background: #f8fafc;
+        background: #ffffffff;
         border: none;
         border-radius: 8px;
         padding: 0.75rem 1rem 0.75rem 3rem;
         font-size: 0.875rem;
-        color: #1e293b;
+        color: #020202ff;
     }
 
     .search-input:focus {
@@ -280,7 +280,11 @@
         
         <!-- Toggle Tabs -->
         <div class="status-toggle">
-            <a href="{{ route('department.orders.index', ['status' => 'Đang xử lý']) }}" class="toggle-item {{ request('status') == 'Đang xử lý' || !request('status') ? 'active' : '' }}">
+            <a href="{{ route('department.orders.index') }}" class="toggle-item {{ !request('status') ? 'active' : '' }}">
+                Tất cả
+                <span class="toggle-count">{{ $allCount }}</span>
+            </a>
+            <a href="{{ route('department.orders.index', ['status' => 'Đang xử lý']) }}" class="toggle-item {{ request('status') == 'Đang xử lý' ? 'active' : '' }}">
                 Đang xử lý
                 <span class="toggle-count">{{ $processingCount }}</span>
             </a>
@@ -313,15 +317,15 @@
                     Bộ lọc
                 </button> -->
 
-                <button type="submit" class="btn-search">
+                <!-- <button type="submit" class="btn-search">
                     Tìm kiếm
-                </button>
+                </button> -->
             </form>
         </div>
     </div>
 
     <!-- Table Area -->
-    <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+    <div id="orders-list-container" class="card border-0 shadow-sm" style="border-radius: 12px;">
         <div class="table-responsive">
             <table class="custom-table">
                 <thead>
@@ -339,7 +343,7 @@
                     @forelse($orders as $order)
                         <tr>
                             <td>
-                                <span class="order-id">#ORD-{{ $order->id }}</span>
+                                <span class="order-id">{{ $order->id }}</span>
                             </td>
                             <td>
                                 <div class="dept-wrapper">
@@ -383,7 +387,7 @@
                             <td>
                                 <div class="date-wrapper">
                                     <span class="date-main">{{ $order->created_at->format('d/m/Y') }}</span>
-                                    <span class="date-sub">{{ $order->created_at->format('h:i A') }}</span>
+                                    <!-- <span class="date-sub">{{ $order->created_at->format('h:i A') }}</span> -->
                                 </div>
                             </td>
                             <td style="text-align: right;">
@@ -420,4 +424,44 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('.search-input');
+        const form = document.querySelector('.search-filter-container');
+        let searchTimeout;
+
+        if (searchInput && form) {
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+
+                searchTimeout = setTimeout(() => {
+                    const formData = new FormData(form);
+                    const params = new URLSearchParams(formData);
+                    const url = `${form.action}?${params.toString()}`;
+
+                    // Update URL without reload
+                    window.history.pushState({}, '', url);
+
+                    fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newContent = doc.getElementById('orders-list-container');
+                        
+                        if (newContent) {
+                            document.getElementById('orders-list-container').innerHTML = newContent.innerHTML;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }, 500); // Wait 500ms after typing stops
+            });
+        }
+    });
+</script>
 @endsection

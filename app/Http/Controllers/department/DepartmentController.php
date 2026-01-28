@@ -14,21 +14,25 @@ class DepartmentController extends Controller
         // Lấy department_id của user đang đăng nhập
         $departmentId = Auth::user()->department_id;
         
-        // Thống kê tổng quan - chỉ của department này
-        $totalRequests = PurchaseRequest::where('department_id', $departmentId)->count();
+        // Lấy dữ liệu biểu đồ theo tháng
+        $selectedYear = $request->input('year', date('Y'));
+        
+        // Thống kê tổng quan - chỉ của department này theo năm được chọn
+        $totalRequests = PurchaseRequest::where('department_id', $departmentId)
+            ->whereYear('created_at', $selectedYear)
+            ->count();
         $pendingRequests = PurchaseRequest::where('department_id', $departmentId)
             ->where('status', 'Đang xử lý')
+            ->whereYear('created_at', $selectedYear)
             ->count();
         $completedRequests = PurchaseRequest::where('department_id', $departmentId)
             ->where('status', 'Hoàn thành')
+            ->whereYear('created_at', $selectedYear)
             ->count();
         $rejectedRequests = PurchaseRequest::where('department_id', $departmentId)
             ->where('status', 'Từ chối')
+            ->whereYear('created_at', $selectedYear)
             ->count();
-        
-        
-        // Lấy dữ liệu biểu đồ theo tháng
-        $selectedYear = $request->input('year', date('Y'));
         
         // Lấy danh sách các năm có dữ liệu
         $availableYears = \DB::table('purchase_requests')
@@ -58,11 +62,9 @@ class DepartmentController extends Controller
             $chartData[] = $monthlyData[$i] ?? 0;
         }
         
-        
-        
-        
-        // Lấy dữ liệu phân bổ trạng thái cho biểu đồ tròn
+        // Lấy dữ liệu phân bổ trạng thái cho biểu đồ tròn theo năm được chọn
         $statusDistribution = PurchaseRequest::where('department_id', $departmentId)
+            ->whereYear('created_at', $selectedYear)
             ->selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status')
@@ -93,5 +95,38 @@ class DepartmentController extends Controller
             'availableYears',
             'pieChartData'
         ));
+    }
+    public function guide()
+    {
+        return view('department.guide');
+    }
+
+    public function changePassword()
+    {
+        return view('department.change-password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ], [
+            'current_password.required' => 'Vui lòng nhập mật khẩu hiện tại.',
+            'new_password.required' => 'Vui lòng nhập mật khẩu mới.',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự.',
+            'new_password.confirmed' => 'Xác nhận mật khẩu mới không khớp.',
+        ]);
+
+        $user = Auth::user();
+
+        if (!\Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không đúng.']);
+        }
+
+        $user->password = \Hash::make($request->new_password);
+        $user->save();
+
+        return back()->with('success', 'Đổi mật khẩu thành công!');
     }
 }
