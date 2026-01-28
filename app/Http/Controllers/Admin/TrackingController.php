@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\PurchaseRequest;
 use App\Models\PrTimeline;
+use App\Models\Department;
+use App\Models\User;
+use App\Exports\PurchaseRequestsExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Hash;
 
 class TrackingController extends Controller
 {
@@ -20,7 +25,7 @@ class TrackingController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'department_id' => 'nullable|exists:departments,id',
+            'department_id' => 'nullable|string',
             'content' => 'required|string',
             'status' => 'nullable|string',
             'delivery_note' => 'nullable|string',
@@ -35,8 +40,43 @@ class TrackingController extends Controller
             'goods_received_date' => 'nullable|date',
         ]);
 
+        $deptId = $request->input('department_id');
+        
+        // If department_id is not numeric, it's a new department name
+        if ($deptId && !is_numeric($deptId)) {
+            $deptName = trim($deptId);
+            $department = Department::where('name', $deptName)->first();
+            
+            if (!$department) {
+                // Create Department
+                $department = Department::create([
+                    'name' => $deptName,
+                    'code' => $this->generateInitials($deptName)
+                ]);
+                
+                // Create User for this department
+                $username = strtolower($department->code);
+                
+                // Ensure unique username
+                $originalUsername = $username;
+                $count = 1;
+                while (User::where('name', $username)->exists()) {
+                    $username = $originalUsername . $count;
+                    $count++;
+                }
+
+                User::create([
+                    'name' => $username,
+                    'password' => '123456', // Fixed password as requested
+                    'role' => 'department',
+                    'department_id' => $department->id,
+                ]);
+            }
+            $deptId = $department->id;
+        }
+
         $pr = PurchaseRequest::create([
-            'department_id' => $validated['department_id'] ?: null,
+            'department_id' => $deptId ?: null,
             'content' => $validated['content'],
             'status' => $validated['status'] ?: 'Đang xử lý',
             'delivery_note' => $validated['delivery_note'] ?: null,
@@ -111,4 +151,27 @@ class TrackingController extends Controller
 
     return response()->json(['success' => true]);
 }
+
+    public function export(Request $request)
+    {
+        $filters = [
+            'status' => $request->status,
+            'month' => $request->month,
+            'year' => $request->year,
+        ];
+
+        $fileName = 'thong_ke_mua_hang_' . date('Ymd_His') . '.xlsx';
+        
+        return Excel::download(new PurchaseRequestsExport($filters), $fileName);
+    }
+
+    private function generateInitials($name)
+    {
+        $words = explode(' ', $name);
+        $initials = '';
+        foreach ($words as $w) {
+            $initials .= mb_substr($w, 0, 1);
+        }
+        return mb_strtolower($initials, 'UTF-8');
+    }
 }
