@@ -48,7 +48,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
-                <span class="font-bold text-[15px]">Theo dõi Mua hàng</span>
+                <span class="font-bold text-[15px]">Theo dõi mua hàng</span>
             </a>
 
             <div class="pt-4 mt-2">
@@ -65,9 +65,9 @@
                     <span class="font-bold text-[15px]">Cài đặt hệ thống</span>
                 </a>
 
-                <a href="#" 
-                   class="flex items-center space-x-3 px-4 py-3.5 rounded-2xl transition-all duration-300 group text-slate-500 hover:bg-slate-50 hover:text-blue-600">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 group-hover:text-blue-600">
+                <a href="{{ route('admin.change-password') }}" 
+                   class="flex items-center space-x-3 px-4 py-3.5 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.change-password') ? 'bg-white text-blue-600 shadow-xl shadow-slate-200/60 border border-slate-50' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-lg {{ request()->routeIs('admin.change-password') ? 'bg-blue-50 text-blue-600' : 'text-slate-400 group-hover:text-blue-600' }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
@@ -106,5 +106,51 @@
     </main>
 
     @yield('scripts')
+
+    @yield('scripts')
+
+    <!-- Global Toast Notification -->
+    @if(session('success'))
+    <style>
+        @keyframes toast-slide-in {
+            0% { transform: translateX(calc(100% + 2rem)); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes toast-slide-out {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(calc(100% + 2rem)); opacity: 0; }
+        }
+        .toast-show { animation: toast-slide-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        .toast-hide { animation: toast-slide-out 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    </style>
+
+    <div id="toast-container" class="fixed top-8 right-8 z-[10000] pointer-events-none">
+        <div id="toast-success" class="toast-show pointer-events-auto flex items-center p-1.5 pr-8 rounded-full shadow-[10px_15px_30px_-5px_rgba(16,185,129,0.3)]" 
+             style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); min-width: 280px; border: none !important;">
+            <div class="flex-none flex items-center justify-center w-9 h-9 bg-white rounded-full shadow-sm" style="color: #10b981;">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <div class="ml-4">
+                <p class="text-[14px] font-extrabold text-white tracking-tight" style="margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                    {{ session('success') }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeToast() {
+            const toast = document.getElementById('toast-success');
+            if (toast) {
+                toast.classList.remove('toast-show');
+                toast.classList.add('toast-hide');
+                setTimeout(() => toast.remove(), 500);
+            }
+        }
+        setTimeout(closeToast, 3000);
+    </script>
+    @endif
 </body>
 </html>
