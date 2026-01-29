@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Portal') - Quản lý PR</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('styles')
     <style>
@@ -14,67 +14,84 @@
             height: 100vh;
             overflow: hidden;
         }
+        a {
+            text-decoration: none !important;
+        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen flex">
     <!-- Sidebar -->
     <aside class="w-72 bg-white border-r border-slate-200 h-screen flex flex-col z-50 shrink-0">
-        <div class="p-6 border-b border-slate-100 flex items-center space-x-3">
-            <div class="p-2 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-200">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
+        <div class="p-6 border-b border-slate-100 flex flex-col items-center justify-center space-y-3">
+            <img src="{{ asset('images/logo.jpg') }}" alt="Tâm Trí Cao Lãnh" class="h-16 w-auto object-contain rounded-xl shadow-sm">
+            <div class="text-center flex flex-col items-center">
+                <span class="text-[11px] font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 uppercase tracking-[0.1em] leading-tight">Bệnh Viện Đa Khoa</span>
+                <span class="text-[15px] font-[900] bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 uppercase tracking-tight leading-none mt-0.5">Tâm Trí Cao Lãnh</span>
             </div>
-            <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Admin Portal</span>
         </div>
 
-        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] px-4 mb-4">Menu Chính</p>
-            
-            <a href="{{ route('admin.dashboard') }}" 
-               class="flex items-center space-x-3 px-4 py-3.5 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.dashboard') ? 'bg-white text-blue-600 shadow-xl shadow-slate-200/60 border border-slate-50' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
-                <div class="p-1 px-1.5 {{ request()->routeIs('admin.dashboard') ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-600' }}">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M4 13h6a1 1 0 001-1V4a1 1 0 00-1-1H4a1 1 0 00-1 1v8a1 1 0 001 1zm0 8h6a1 1 0 001-1v-4a1 1 0 00-1-1H4a1 1 0 00-1 1v4a1 1 0 001 1zm10 0h6a1 1 0 001-1v-8a1 1 0 00-1-1h-6a1 1 0 00-1 1v8a1 1 0 001 1zm0-18v4a1 1 0 001 1h6a1 1 0 001-1V4a1 1 0 00-1-1h-6a1 1 0 00-1 1z"/>
-                    </svg>
+        <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto custom-scrollbar min-h-0">
+            <div>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 mb-2">Menu Chính</p>
+                <div class="space-y-1">
+                    <a href="{{ route('admin.dashboard') }}" 
+                       class="flex items-center space-x-3 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.dashboard') ? 'bg-white text-blue-600 shadow-xl shadow-blue-100/50 border-[1.5px] border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600 border-[1.5px] border-transparent' }}">
+                        <div class="flex items-center justify-center w-8 h-8 {{ request()->routeIs('admin.dashboard') ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-600' }}">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M4 13h6a1 1 0 001-1V4a1 1 0 00-1-1H4a1 1 0 00-1 1v8a1 1 0 001 1zm0 8h6a1 1 0 001-1v-4a1 1 0 00-1-1H4a1 1 0 00-1 1v4a1 1 0 001 1zm10 0h6a1 1 0 001-1v-8a1 1 0 00-1-1h-6a1 1 0 00-1 1v8a1 1 0 001 1zm0-18v4a1 1 0 001 1h6a1 1 0 001-1V4a1 1 0 00-1-1h-6a1 1 0 00-1 1z"/>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-[14px]">Tổng quan</span>
+                    </a>
+
+                    <a href="{{ route('admin.tracking') }}" 
+                       class="flex items-center space-x-3 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.tracking') ? 'bg-white text-blue-600 shadow-xl shadow-blue-100/50 border-[1.5px] border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600 border-[1.5px] border-transparent' }}">
+                        <div class="flex items-center justify-center w-8 h-8 {{ request()->routeIs('admin.tracking') ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-600' }}">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <span class="font-bold text-[14px]">Theo dõi mua hàng</span>
+                    </a>
                 </div>
-                <span class="font-bold text-[15px]">Tổng quan</span>
-            </a>
-
-            <a href="{{ route('admin.tracking') }}" 
-               class="flex items-center space-x-3 px-4 py-3.5 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.tracking') ? 'bg-white text-blue-600 shadow-xl shadow-slate-200/60 border border-slate-50' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
-                <div class="flex items-center justify-center w-8 h-8 rounded-lg {{ request()->routeIs('admin.tracking') ? 'bg-blue-50 text-blue-600' : 'text-slate-400 group-hover:text-blue-600' }}">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <span class="font-bold text-[15px]">Theo dõi mua hàng</span>
-            </a>
-
-            <div class="pt-4 mt-2">
-                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] px-4 mb-4">Cài đặt</p>
-                
-                <a href="#" 
-                   class="flex items-center space-x-3 px-4 py-3.5 rounded-2xl transition-all duration-300 group text-slate-500 hover:bg-slate-50 hover:text-blue-600">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 group-hover:text-blue-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </div>
-                    <span class="font-bold text-[15px]">Cài đặt hệ thống</span>
-                </a>
-
-                <a href="{{ route('admin.change-password') }}" 
-                   class="flex items-center space-x-3 px-4 py-3.5 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.change-password') ? 'bg-white text-blue-600 shadow-xl shadow-slate-200/60 border border-slate-50' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600' }}">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-lg {{ request()->routeIs('admin.change-password') ? 'bg-blue-50 text-blue-600' : 'text-slate-400 group-hover:text-blue-600' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                    </div>
-                    <span class="font-bold text-[15px]">Đổi mật khẩu</span>
-                </a>
             </div>
+
+            <div class="pt-2">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 mb-2">Cài đặt</p>
+                <div class="space-y-1">
+                    <a href="{{ route('admin.settings') }}" 
+                       class="flex items-center space-x-3 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.settings') ? 'bg-white text-blue-600 shadow-xl shadow-blue-100/50 border-[1.5px] border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600 border-[1.5px] border-transparent' }}">
+                        <div class="flex items-center justify-center w-8 h-8 {{ request()->routeIs('admin.settings') ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-600' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <span class="font-bold text-[14px]">Cài đặt hệ thống</span>
+                    </a>
+
+                    <a href="{{ route('admin.change-password') }}" 
+                       class="flex items-center space-x-3 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.change-password') ? 'bg-white text-blue-600 shadow-xl shadow-blue-100/50 border-[1.5px] border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600 border-[1.5px] border-transparent' }}">
+                        <div class="flex items-center justify-center w-8 h-8 {{ request()->routeIs('admin.change-password') ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-600' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <span class="font-bold text-[14px]">Đổi mật khẩu</span>
+                    </a>
+
+                    <a href="{{ route('admin.instructions') }}" 
+                       class="flex items-center space-x-3 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.instructions') ? 'bg-white text-blue-600 shadow-xl shadow-blue-100/50 border-[1.5px] border-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-600 border-[1.5px] border-transparent' }}">
+                        <div class="flex items-center justify-center w-8 h-8 {{ request()->routeIs('admin.instructions') ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-600' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <span class="font-bold text-[14px]">Hướng dẫn sử dụng</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
         </nav>
 
         <div class="p-4 border-t border-slate-100">

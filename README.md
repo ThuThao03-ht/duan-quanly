@@ -68,6 +68,16 @@ php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" -
 dir vendor/maatwebsite/excel
 
 
+php artisan make:controller Admin/SettingsController
+
+php artisan make:import PurchaseRequestsImport
+
+php artisan make:command AutoBackupDatabase
+
+php artisan make:observer BackupObserver
+
+php artisan fix:dates
+
 ## Cài đặt & chạy dự án
 
 composer install

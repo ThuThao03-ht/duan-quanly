@@ -11,10 +11,6 @@
     :root {
         --bs-font-sans-serif: 'Plus Jakarta Sans', sans-serif;
     }
-    body {
-        background-color: #f8fafc;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
     a {
         text-decoration: none !important;
     }
