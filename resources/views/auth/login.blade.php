@@ -428,7 +428,7 @@
 
     <!-- Copyright -->
     <div class="copyright-text">
-        © 2026 Bệnh Viện Đa Khoa Tâm Trí Cao Lãnh.
+        &copy; {{ date('Y') }} Bệnh Viện Đa Khoa Tâm Trí Cao Lãnh.
     </div>
 
     <!-- Bootstrap JS -->

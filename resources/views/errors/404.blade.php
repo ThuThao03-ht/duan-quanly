@@ -29,7 +29,7 @@
         <div class="flex justify-center order-2 md:order-1">
             <div class="relative">
                 <div class="absolute inset-0 bg-blue-400 opacity-20 blur-3xl rounded-full scale-150 animate-pulse"></div>
-                <img src="{{ asset('images/errors/404-illustration.png') }}" alt="404 Illustration" 
+                <img src="{{ asset('images/404-illustration.png') }}" alt="404 Illustration" 
                      class="relative w-full max-w-sm drop-shadow-2xl rounded-2xl">
             </div>
         </div>
@@ -65,7 +65,7 @@
             </div>
 
             <div class="pt-8 border-t border-gray-100 flex items-center justify-center md:justify-start gap-3">
-                <img src="{{ asset('logo.jpg') }}" alt="" class="h-8 w-8 object-contain rounded-md">
+                <img src="{{ asset('images/logo.jpg') }}" alt="" class="h-8 w-8 object-contain rounded-md">
                 <span class="text-sm font-semibold text-sky-600 uppercase tracking-wider">Tâm Trí Cao Lãnh</span>
                 <span class="text-xs text-gray-400">| TMMC Healthcare System</span>
             </div>

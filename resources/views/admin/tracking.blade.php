@@ -218,6 +218,61 @@
         .percentage-text {
             color: #16a34a !important; /* Text green 600 */
         }
+        
+        /* Row Selection and Deletion */
+        tr.row-selected td,
+        tr.row-selected .sticky-col-0,
+        tr.row-selected .sticky-col-1,
+        tr.row-selected .sticky-col-2,
+        tr.row-selected .sticky-col-3,
+        tr.row-selected .sticky-col-4,
+        tr.row-selected .sticky-col-5 {
+            background-color: #fee2e2 !important; /* Soft Red */
+            box-shadow: inset 0 0 0 1px #ef4444 !important;
+        }
+
+        /* Custom Modal Styles */
+        .custom-modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .custom-modal-backdrop.open {
+            display: flex;
+            opacity: 1;
+        }
+        .custom-modal {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            margin: auto;
+            transform: scale(0.95) translateY(10px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0;
+        }
+        .custom-modal-backdrop.open .custom-modal {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        
+        /* Force button text colors */
+        #modal-confirm, #modal-ok {
+            color: #ffffff !important;
+        }
+        #modal-cancel {
+            color: #334155 !important; /* slate-700 */
+        }
     </style>
 @endsection
 
@@ -241,7 +296,7 @@
                 <select id="filter_year" class="text-sm text-slate-600 outline-none py-2 bg-transparent pr-4 font-medium cursor-pointer">
                     <option value="all">Tất cả năm</option>
                     @for($y = 2024; $y <= 2027; $y++)
-                        <option value="{{ $y }}" {{ $y == date('Y') ? 'selected' : '' }}>{{ $y }}</option>
+                        <option value="{{ $y }}">{{ $y }}</option>
                     @endfor
                 </select>
             </div>
@@ -356,8 +411,7 @@
                                     title="Nhập '1 tuần', '1 tháng', '15 ngày' để tự động tính từ ngày Kí HĐ">
                                 <div class="date-picker-wrapper">
                                     <svg class="date-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002-2z" /></svg>
-                                    <input type="date" class="date-hidden-input" 
-                                        onchange="const txt = this.closest('.duration-container').querySelector('.duration-input'); txt.value = this.value; txt.dispatchEvent(new Event('change'))">
+                                    <input type="date" class="date-hidden-input">
                                 </div>
                             </div>
                         </td>
@@ -380,7 +434,7 @@
                             </span>
                         </td>
                         <td class="p-4 text-slate-500 font-medium text-center sticky-col-1">
-                            <span class="row-stt-text">{{ $request->id }}</span>
+                            <span class="row-stt-text"></span>
                         </td>
                         <td class="p-4 font-semibold text-slate-700 sticky-col-2">{{ $request->department->name ?? 'N/A' }}</td>
                         <td class="p-4 sticky-col-3 content-wrap">
@@ -434,8 +488,7 @@
                                 <div class="date-picker-wrapper">
                                     <svg class="date-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002-2z" /></svg>
                                     <input type="date" class="date-hidden-input" 
-                                        value="{{ $request->timeline->goods_received_date ?? '' }}"
-                                        onchange="const txt = this.closest('.duration-container').querySelector('.duration-input'); txt.value = formatDateDisplay(this.value); txt.dispatchEvent(new Event('change'))">
+                                        value="{{ $request->timeline->goods_received_date ?? '' }}">
                                 </div>
                             </div>
                         </td>
@@ -495,17 +548,27 @@
 
             async function saveNewPR() {
                 const deptName = document.getElementById('new_department_name').value;
+                const toSqlDate = (val) => {
+                    if (!val) return null;
+                    if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+                        const [d, m, y] = val.split('/');
+                        return `${y}-${m}-${d}`;
+                    }
+                    if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
+                    return val;
+                };
+
                 const data = {
                     content: document.getElementById('new_content').value,
-                    department_id: deptName, // Send name, backend will handle ID or Create
+                    department_id: deptName,
                     status: document.getElementById('new_status').value,
-                    pr_received_date: document.getElementById('new_pr_received_date').value,
-                    pr_approved_date: document.getElementById('new_pr_approved_date').value,
-                    quotation_date: document.getElementById('new_quotation_date').value,
-                    po_created_date: document.getElementById('new_po_created_date').value,
-                    po_approved_date: document.getElementById('new_po_approved_date').value,
-                    contract_signed_date: document.getElementById('new_contract_signed_date').value,
-                    goods_received_date: document.getElementById('new_goods_received_date').value,
+                    pr_received_date: toSqlDate(document.getElementById('new_pr_received_date').value),
+                    pr_approved_date: toSqlDate(document.getElementById('new_pr_approved_date').value),
+                    quotation_date: toSqlDate(document.getElementById('new_quotation_date').value),
+                    po_created_date: toSqlDate(document.getElementById('new_po_created_date').value),
+                    po_approved_date: toSqlDate(document.getElementById('new_po_approved_date').value),
+                    contract_signed_date: toSqlDate(document.getElementById('new_contract_signed_date').value),
+                    goods_received_date: toSqlDate(document.getElementById('new_goods_received_date').value),
                     delivery_note: document.getElementById('new_delivery_note').value,
                     reason: '',
                     department_note: '',
@@ -565,7 +628,7 @@
                         </span>
                     </td>
                     <td class="p-4 text-slate-500 font-medium text-center sticky-col-1">
-                        <span class="row-stt-text">${pr.id}</span>
+                        <span class="row-stt-text"></span>
                     </td>
                     <td class="p-4 font-semibold text-slate-700 sticky-col-2">${pr.department ? pr.department.name : 'N/A'}</td>
                     <td class="p-4 sticky-col-3 content-wrap">
@@ -677,9 +740,27 @@
 
                 // Hiển thị/ẩn thông báo không có kết quả
                 if (noResultsRow) {
-                    noResultsRow.style.display = (visibleCount === 0 && rows.length > 0) ? '' : 'none';
+                    noResultsRow.style.display = visibleCount === 0 ? 'table-row' : 'none';
                 }
+
+                // Cập nhật STT sau khi lọc
+                updateSTT();
             }
+            window.filterTable = filterTable;
+
+            function updateSTT() {
+                const rows = Array.from(tableBody.querySelectorAll('tr:not(.bg-blue-50\\/50):not(#no-results-row):not(#empty-row)'))
+                    .filter(row => row.style.display !== 'none');
+                
+                let maxSTT = rows.length;
+                rows.forEach(row => {
+                    const cell = row.querySelector('.row-stt-text');
+                    if (cell) {
+                        cell.innerText = maxSTT--;
+                    }
+                });
+            }
+            window.updateSTT = updateSTT;
 
             function clearFilters() {
                 document.getElementById('filter_month').value = 'all';
@@ -706,127 +787,225 @@
             // Chạy lọc lần đầu để áp dụng Năm hiện tại
             filterTable();
 
+            // Prevent duplicate listeners
+            if (!window.trackingListenersAttached) {
+                window.trackingListenersAttached = true;
+
+                // 1. Double Click to Select Row
+                document.addEventListener('dblclick', function(e) {
+                    const tr = e.target.closest('#pr-table-body tr');
+                    if (!tr) return;
+
+                    const prevSelected = document.querySelector('.row-selected');
+                    if (prevSelected && prevSelected !== tr) {
+                        prevSelected.classList.remove('row-selected');
+                    }
+
+                    tr.classList.toggle('row-selected');
+                    
+                    if (tr.classList.contains('row-selected')) {
+                        if (document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                            document.activeElement.blur();
+                        }
+                        window.getSelection()?.removeAllRanges();
+                    }
+                });
+
+                // 2. Single Click to Deselect (if clicking another row/input)
+                document.addEventListener('click', function(e) {
+                    const selectedRow = document.querySelector('.row-selected');
+                    if (!selectedRow) return;
+
+                    // If clicking inside the selected row itself, keep selection (unless editing input, which is handled elsewhere)
+                    // But if user clicks specifically to edit (input/editable), might want to clear.
+                    // For now, simple logic: if click is outside selected row, clear it.
+                    if (!selectedRow.contains(e.target)) {
+                        selectedRow.classList.remove('row-selected');
+                    } 
+                    // Also clear on interactive elements even inside row if single click usually implies edit start?
+                    // But requirement says "choose another row". So outside check is primary.
+                    // Let's also check if we are activating an edit on ANY row (input or editable)
+                     if (e.target.tagName === 'INPUT' || e.target.closest('.editable')) {
+                        selectedRow.classList.remove('row-selected');
+                    }
+                }, true); // Use capture phase to ensure we catch it early
+
+                // 2b. Keyboard handling for deletion
+
+                // 2. Keyboard handling for deletion
+                window.addEventListener('keydown', function(e) {
+                    // Ignore held-down keys to prevent valid/cancel double-fire loops
+                    if (e.repeat) return;
+
+                    if (e.key === 'Delete' || e.key === 'Backspace') {
+                        const selectedRow = document.querySelector('.row-selected');
+                        if (!selectedRow) return;
+
+                        if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName) || 
+                            document.activeElement.isContentEditable) {
+                            return;
+                        }
+
+                        const prId = parseInt(selectedRow.dataset.prId);
+                        const deptName = selectedRow.querySelector('.sticky-col-2').innerText;
+                        
+                        showConfirmModal(
+                            `Bạn có chắc chắn muốn xóa PR này của <span class="font-bold text-red-500">${deptName}</span> không?`,
+                            () => deletePR(prId, selectedRow),
+                            () => selectedRow.classList.remove('row-selected')
+                        );
+                    }
+                });
+            }
+
+            async function deletePR(id, rowElement) {
+                try {
+                    const response = await fetch(`/admin/tracking/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        rowElement.style.transition = 'all 0.4s ease';
+                        rowElement.style.opacity = '0';
+                        rowElement.style.transform = 'translateX(20px)';
+                        setTimeout(() => {
+                            rowElement.remove();
+                            updateSTT();
+                        }, 400);
+                    } else {
+                        const err = await response.json();
+                        showAlert('Không thể xóa: ' + (err.message || 'Lỗi không xác định'));
+                    }
+                } catch (error) {
+                    console.error('Delete error:', error);
+                    showAlert('Lỗi kết nối máy chủ.');
+                }
+            }
+
            function bindRowEvents(container) {
+
+    // Helper to trigger change
+    const triggerChange = (element) => {
+        const event = new Event('change', { bubbles: true });
+        element.dispatchEvent(event);
+    };
+
+    // (Old row selection logic removed, handled by global delegation above)
 
     // Editable text
     container.querySelectorAll('.editable').forEach(el => {
-        el.onclick = function () {
+        el.addEventListener('click', function () {
             handleEdit(this);
-        };
+        });
     });
 
-    // Editable date / select / duration
-    container.querySelectorAll('.editable-date, .editable-select, .duration-input').forEach(el => {
+    // All interactive items in the row
+    container.querySelectorAll('.editable-date, .editable-select, .duration-input, .date-hidden-input').forEach(el => {
+        
+        // 1. Calendar selection (the hidden date input)
+        if (el.classList.contains('date-hidden-input')) {
+            el.addEventListener('change', function() {
+                const txt = this.closest('.duration-container').querySelector('.duration-input');
+                if (txt && this.value) {
+                    txt.value = formatDateDisplay(this.value);
+                    triggerChange(txt);
+                }
+            });
+        }
 
-        // =========================
-        // ON CHANGE
-        // =========================
-        el.onchange = function () {
-            const id = this.dataset.id;
-            let value = this.value;
-            const field = this.dataset.field;
+        // 2. Main change listener for data saving
+        if (!el.classList.contains('date-hidden-input')) {
+            el.addEventListener('change', function() {
+                const id = this.dataset.id;
+                const field = this.dataset.field;
+                let rawValue = this.value;
 
-            // 1️⃣ Update status UI
-            if (field === 'status') {
-                updateStatusStyle(this);
-                setTimeout(filterTable, 100);
-            }
-
-            // 2️⃣ DURATION INPUT: chỉ cho phép DATE hợp lệ
-            if (this.classList.contains('duration-input')) {
-
-                // dd/mm/yyyy → yyyy-mm-dd
-                if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
-                    const [d, m, y] = value.split('/');
-                    value = `${y}-${m}-${d}`;
+                if (field === 'status') {
+                    updateStatusStyle(this);
+                    setTimeout(filterTable, 100);
                 }
 
-                // ❌ Không phải yyyy-mm-dd → KHÔNG lưu
-                if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-                    return;
+                let valueToSave = rawValue;
+                if (this.classList.contains('duration-input')) {
+                    valueToSave = toSqlDate(rawValue);
+                    if (valueToSave && !/^\d{4}-\d{2}-\d{2}$/.test(valueToSave)) return;
+                } else if (this.classList.contains('editable-date')) {
+                    if (valueToSave && !/^\d{4}-\d{2}-\d{2}$/.test(valueToSave)) return;
                 }
-            }
 
-            // 3️⃣ Editable date (input type=date)
-            if (this.classList.contains('editable-date')) {
-                if (value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-                    return;
-                }
-            }
+                if (id && field) saveData(id, field, valueToSave || null);
+                refreshProgress(this.closest('tr'));
+            });
+        }
 
-            // 4️⃣ Save data
-            if (id && field) {
-                saveData(id, field, value || null);
-            }
-
-            // 5️⃣ Refresh progress
-            refreshProgress(this.closest('tr'));
-        };
-
-        // =========================
-        // DURATION INPUT LOGIC
-        // =========================
+        // 3. Duration/Manual Date parsing on blur
         if (el.classList.contains('duration-input')) {
-
-            el.onblur = function () {
+            el.addEventListener('blur', function() {
                 const tr = this.closest('tr');
-                const startInput =
-                    tr.querySelector('[data-field="contract_signed_date"]') ||
-                    tr.querySelector('#new_contract_signed_date');
-
+                const startInput = tr.querySelector('[data-field="contract_signed_date"]') || tr.querySelector('#new_contract_signed_date');
                 const startDate = startInput ? startInput.value : null;
 
-                // Nếu đã là dd/mm/yyyy → bỏ qua
-                if (this.value && /^\d{2}\/\d{2}\/\d{4}$/.test(this.value)) return;
+                if (!this.value) {
+                     // Clear hidden date if text is cleared
+                     const hidden = this.closest('.duration-container').querySelector('.date-hidden-input');
+                     if (hidden) hidden.value = '';
+                     return;
+                }
 
-                // Nếu là yyyy-mm-dd → format hiển thị
-                if (this.value && /^\d{4}-\d{2}-\d{2}$/.test(this.value)) {
-                    this.value = formatDateDisplay(this.value);
+                // A. Parse manual date entry (e.g., 30/1/2026)
+                const dateMatch = this.value.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
+                if (dateMatch) {
+                    const d = dateMatch[1].padStart(2, '0');
+                    const m = dateMatch[2].padStart(2, '0');
+                    let y = dateMatch[3];
+                    if (y.length === 2) y = '20' + y;
+                    this.value = `${d}/${m}/${y}`;
+                    
+                    // Sync back to hidden input for consistency
+                    const hidden = this.closest('.duration-container').querySelector('.date-hidden-input');
+                    if (hidden) hidden.value = `${y}-${m}-${d}`;
+                    
+                    triggerChange(this);
                     return;
                 }
 
-                // Parse duration
-                if (this.value) {
-                    const calculated = parseDuration(this.value, startDate);
-
-                    if (calculated) {
-                        this.value = formatDateDisplay(calculated);
-
-                        // 👉 Chỉ trigger change khi đã có DATE hợp lệ
-                        this.dispatchEvent(new Event('change'));
-
-                    } else if (!startDate) {
-                        alert('Vui lòng nhập ngày "Kí HĐ" trước để hệ thống có thể tính toán.');
-                        this.value = '';
-
-                    } else {
-                        alert('Định dạng không hợp lệ. Ví dụ: 1 tuần, 1 tháng, 15 ngày...');
+                // B. Duration calculation (e.g., 1 week)
+                const calculated = parseDuration(this.value, startDate);
+                if (calculated) {
+                    this.value = formatDateDisplay(calculated);
+                    const hidden = this.closest('.duration-container').querySelector('.date-hidden-input');
+                    if (hidden) hidden.value = calculated;
+                    triggerChange(this);
+                } else {
+                    // Not a period and not a manual date
+                    if (!startDate && /^\d+\s*\w+$/.test(this.value)) {
+                        alert('Hệ thống cần ngày "Kí HĐ" để tính toán thời gian. Vui lòng chọn ngày từ lịch hoặc nhập định dạng dd/mm/yyyy.');
                         this.value = '';
                     }
                 }
-            };
+            });
 
-            // Enter = blur
-            el.onkeydown = function (e) {
+            el.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') this.blur();
-            };
+            });
         }
-        // =========================
-        // ON FOCUS & BLUR FOR INDICATOR
-        // =========================
-        el.onfocus = function() {
+
+        // indicator logic...
+        el.addEventListener('focus', function() {
             this.closest('tr').classList.add('active-editing');
-        };
+        });
         el.addEventListener('blur', function() {
-            // Delay small time to check if we moved to another field in same row
             setTimeout(() => {
                 const activeEl = document.activeElement;
                 if (!activeEl || activeEl.closest('tr') !== this.closest('tr')) {
                     this.closest('tr').classList.remove('active-editing');
                 }
-            }, 50);
+            }, 100);
         });
-
     });
 }
 
@@ -907,11 +1086,23 @@
                 }
             }
 
-            function formatDateDisplay(dateStr) {
+            window.toSqlDate = function(val) {
+                if (!val) return null;
+                val = val.trim();
+                const dmyMatch = val.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+                if (dmyMatch) {
+                    return `${dmyMatch[3]}-${dmyMatch[2].padStart(2, '0')}-${dmyMatch[1].padStart(2, '0')}`;
+                }
+                if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
+                return val;
+            };
+
+            window.formatDateDisplay = function(dateStr) {
                 if (!dateStr || !dateStr.includes('-')) return dateStr;
-                const [y, m, d] = dateStr.split('-');
-                return `${d}/${m}/${y}`;
-            }
+                const parts = dateStr.split('-');
+                if (parts.length !== 3) return dateStr;
+                return `${parts[2].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[0]}`;
+            };
 
             function parseDuration(input, startDate) {
                 if (!startDate) return null;
@@ -993,8 +1184,92 @@
                 }
             }
 
+            // Custom Modal Functions
+            function getModalHtml(title, message, isConfirm = false) {
+                return `
+                    <div class="text-center">
+                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full ${isConfirm ? 'bg-red-100' : 'bg-blue-100'} mb-4">
+                            ${isConfirm 
+                                ? '<svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>'
+                                : '<svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+                            }
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">${title}</h3>
+                        <p class="text-sm text-slate-500 mb-6">${message}</p>
+                        <div class="flex justify-center space-x-3">
+                            ${isConfirm 
+                                ? `<button id="modal-cancel" style="color: #334155 !important;" class="px-4 py-2 bg-white text-slate-700 font-semibold rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors focus:outline-none">Hủy bỏ</button>
+                                   <button id="modal-confirm" style="background-color: #dc2626 !important; color: #ffffff !important;" class="px-4 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors shadow-lg shadow-red-200 focus:outline-none">Xác nhận xóa</button>`
+                                : `<button id="modal-ok" style="background-color: #2563eb !important; color: #ffffff !important;" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200 focus:outline-none">Đóng</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }
+
+            window.showAlert = function(message) {
+                const backdrop = document.getElementById('custom-modal-backdrop');
+                const content = document.getElementById('custom-modal-content');
+                if (!backdrop || !content) return alert(message);
+
+                content.innerHTML = getModalHtml('Thông báo', message, false);
+                backdrop.classList.add('open');
+
+                const btnOk = content.querySelector('#modal-ok');
+                btnOk.onclick = () => backdrop.classList.remove('open');
+                btnOk.focus();
+            };
+
+            window.showConfirmModal = function(message, onConfirm, onCancel) {
+                const backdrop = document.getElementById('custom-modal-backdrop');
+                const content = document.getElementById('custom-modal-content');
+                if (!backdrop || !content) {
+                    if (confirm(message.replace(/<[^>]*>?/gm, ''))) return onConfirm();
+                    else return onCancel && onCancel();
+                }
+
+                content.innerHTML = getModalHtml('Xác nhận hành động', message, true);
+                backdrop.classList.add('open');
+
+                const btnConfirm = content.querySelector('#modal-confirm');
+                const btnCancel = content.querySelector('#modal-cancel');
+
+                const close = () => {
+                    backdrop.classList.remove('open');
+                };
+
+                btnConfirm.onclick = () => {
+                    close();
+                    if (onConfirm) onConfirm();
+                };
+
+                btnCancel.onclick = () => {
+                    close();
+                    if (onCancel) onCancel();
+                };
+
+                // Click outside to cancel
+                backdrop.onclick = (e) => {
+                    if (e.target === backdrop) {
+                        close();
+                        if (onCancel) onCancel();
+                    }
+                };
+
+                btnCancel.focus();
+            };
+
+            // Override default alert
+            window.alert = window.showAlert;
+
             // Bind events for initial rows
             bindRowEvents(document);
+            updateSTT();
         });
     </script>
+
+    <!-- Custom Modal Container -->
+    <div id="custom-modal-backdrop" class="custom-modal-backdrop">
+        <div id="custom-modal-content" class="custom-modal"></div>
+    </div>
 @endsection

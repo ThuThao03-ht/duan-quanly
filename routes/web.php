@@ -21,11 +21,23 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/tracking', [TrackingController::class, 'index'])->name('admin.tracking');
     Route::post('/tracking', [TrackingController::class, 'store'])->name('admin.tracking.store');
     Route::post('/tracking/{id}/update', [TrackingController::class, 'update'])->name('admin.tracking.update');
+    Route::delete('/tracking/{id}', [TrackingController::class, 'destroy'])->name('admin.tracking.destroy');
     Route::get('/tracking/export', [TrackingController::class, 'export'])->name('admin.tracking.export');
     
     // Đổi mật khẩu
     Route::get('/change-password', [ProfileController::class, 'showChangePasswordForm'])->name('admin.change-password');
     Route::post('/change-password', [ProfileController::class, 'updatePassword'])->name('admin.update-password');
+
+    // Hướng dẫn sử dụng
+    Route::get('/instructions', [DashboardController::class, 'instructions'])->name('admin.instructions');
+
+    // Cài đặt hệ thống
+    Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('admin.settings');
+    Route::get('/settings/backup', [\App\Http\Controllers\Admin\SettingsController::class, 'backup'])->name('admin.settings.backup');
+    Route::get('/settings/backup/realtime', [\App\Http\Controllers\Admin\SettingsController::class, 'downloadRealtimeBackup'])->name('admin.settings.backup.realtime');
+    Route::get('/settings/backup/create', [\App\Http\Controllers\Admin\SettingsController::class, 'createSnapshot'])->name('admin.settings.backup.create');
+    Route::get('/settings/backup/{filename}', [\App\Http\Controllers\Admin\SettingsController::class, 'downloadBackup'])->name('admin.settings.backup.download');
+    Route::post('/settings/import', [\App\Http\Controllers\Admin\SettingsController::class, 'import'])->name('admin.settings.import');
 });
 
 Route::middleware(['auth', 'role:department'])->prefix('department')->group(function () {

@@ -154,6 +154,25 @@ class TrackingController extends Controller
     return response()->json(['success' => true]);
 }
 
+public function destroy($id)
+{
+    try {
+        $pr = PurchaseRequest::findOrFail($id);
+        
+        // Safety net: Manually delete related records in case DB cascade is missing
+        $pr->timeline()->delete();
+        $pr->notes()->delete();
+        
+        $pr->delete();
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Lỗi Server: ' . $e->getMessage()
+        ], 500);
+    }
+}
+
     public function export(Request $request)
     {
         $filters = [
