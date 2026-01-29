@@ -3,153 +3,388 @@
 @section('title', 'Hướng dẫn sử dụng')
 
 @section('content')
-<div class="max-w-5xl mx-auto py-8 px-4">
-    <!-- Header Section -->
-    <div class="mb-12 text-center">
-        <div class="inline-flex items-center justify-center p-3 bg-blue-50 rounded-2xl text-blue-600 mb-4 shadow-sm">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
+<!-- Import Bootstrap & Modern Fonts -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --bs-font-sans-serif: 'Plus Jakarta Sans', sans-serif;
+        --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+        --secondary-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    body {
+        background-color: #f8fafc;
+    }
+
+    /* Remove underlines from all links and interactive elements */
+    a, .nav-link {
+        text-decoration: none !important;
+    }
+
+    .hero-section {
+        background: var(--primary-gradient);
+        border-radius: 2rem;
+        padding: 4rem 2rem;
+        color: white;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 400px;
+        height: 400px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+    }
+
+    .instruction-card {
+        border-radius: 1.5rem;
+        border: none;
+        background: white;
+        transition: all 0.3s ease;
+        height: 100%;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .instruction-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .icon-box {
+        width: 50px;
+        height: 50px;
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+
+    .bg-indigo-light { background-color: #eef2ff; color: #4f46e5; }
+    .bg-amber-light { background-color: #fffbeb; color: #d97706; }
+    .bg-emerald-light { background-color: #ecfdf5; color: #10b981; }
+    .bg-rose-light { background-color: #fff1f2; color: #e11d48; }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        background: #f1f5f9;
+        color: #475569;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.875rem;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    .feature-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .feature-list li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        border-radius: 1rem;
+        transition: background 0.2s;
+    }
+
+    .feature-list li:hover {
+        background: #f8fafc;
+    }
+
+    .badge-guide {
+        font-size: 0.7rem;
+        font-weight: 800;
+        padding: 0.35rem 0.75rem;
+        border-radius: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .status-processing { background-color: #fffbeb; color: #d97706; }
+    .status-completed { background-color: #ecfdf5; color: #10b981; }
+
+    .img-demo {
+        border-radius: 1rem;
+        border: 1px solid #e2e8f0;
+        margin-top: 1rem;
+        width: 100%;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .section-title {
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title::after {
+        content: '';
+        flex-grow: 1;
+        height: 2px;
+        background: #f1f5f9;
+    }
+
+    .nav-pills-custom .nav-link {
+        border-radius: 1rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 700;
+        color: #64748b;
+        transition: all 0.2s;
+    }
+
+    .nav-pills-custom .nav-link.active {
+        background: var(--primary-gradient);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    }
+
+    .tip-box {
+        background: #fff9eb;
+        border-left: 4px solid #f59e0b;
+        padding: 1.5rem;
+        border-radius: 0 1rem 1rem 0;
+        margin: 2rem 0;
+    }
+</style>
+
+<div class="container-fluid p-4">
+    <!-- Hero Section -->
+    <div class="hero-section text-center">
+        <h1 class="fw-black mb-3">Hướng dẫn Quản trị Hệ thống</h1>
+        <p class="lead opacity-75 mb-0 mx-auto" style="max-width: 700px;">
+            Chào mừng Admin! Đây là trang hỗ trợ giúp bạn nắm vững các thao tác và quy trình quản lý PR trong hệ thống.
+        </p>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-pills nav-pills-custom mb-5 justify-content-center" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-overview-tab" data-bs-toggle="pill" data-bs-target="#pills-overview" type="button" role="tab">
+                <i class="fas fa-eye me-2"></i>Tổng quan
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-tracking-tab" data-bs-toggle="pill" data-bs-target="#pills-tracking" type="button" role="tab">
+                <i class="fas fa-list-check me-2"></i>Theo dõi PR
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-account-tab" data-bs-toggle="pill" data-bs-target="#pills-account" type="button" role="tab">
+                <i class="fas fa-user-shield me-2"></i>Tài khoản
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+        <!-- Overview Tab -->
+        <div class="tab-pane fade show active" id="pills-overview" role="tabpanel">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="instruction-card p-4">
+                        <div class="icon-box bg-indigo-light">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Thống kê Real-time</h5>
+                        <p class="text-slate-600 small">
+                            Trang Dashboard cung cấp cái nhìn tổng thể về số lượng PR, tỷ lệ hoàn thành và xu hướng mua sắm theo từng tháng.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="instruction-card p-4">
+                        <div class="icon-box bg-amber-light">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Thao tác Nhanh</h5>
+                        <p class="text-slate-600 small">
+                            Hệ thống tối ưu hóa việc nhập liệu với các ô chỉnh sửa trực tiếp (Inline Editing), giúp tiết kiệm 50% thời gian xử lý.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="instruction-card p-4">
+                        <div class="icon-box bg-emerald-light">
+                            <i class="fas fa-file-export"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Xuất Báo cáo</h5>
+                        <p class="text-slate-600 small">
+                            Dễ dàng kết xuất dữ liệu sang Excel với đầy đủ các mốc thời gian và ghi chú để phục vụ việc lưu trữ và báo cáo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <h4 class="section-title">Luồng quy trình xử lý</h4>
+                <div class="row mt-4">
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="step-number">01</div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Tiếp nhận PR</h6>
+                                <small class="text-muted">Nhập ngày nhận yêu cầu</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="step-number">02</div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Xử lý PO</h6>
+                                <small class="text-muted">Báo giá & Duyệt PO</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="step-number">03</div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Ký kết HĐ</h6>
+                                <small class="text-muted">Hoàn thiện thủ tục</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="step-number">04</div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Giao hàng</h6>
+                                <small class="text-muted">Hoàn thành PR</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h1 class="text-4xl font-black text-slate-800 tracking-tight mb-3">Trung tâm Hướng dẫn Admin</h1>
-        <p class="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">Khám phá và nắm vững mọi công cụ quản trị để vận hành hệ thống mua sắm hiệu quả nhất.</p>
+
+        <!-- Tracking Tab -->
+        <div class="tab-pane fade" id="pills-tracking" role="tabpanel">
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="instruction-card p-4">
+                        <h5 class="fw-bold mb-4">Hướng dẫn chi tiết Trang Theo dõi</h5>
+                        <ul class="feature-list">
+                            <li>
+                                <div class="step-number">A</div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Thêm mới PR (Dòng NEW)</h6>
+                                    <p class="text-slate-600 small mb-0">Sử dụng dòng trên cùng có màu xanh nhạt. Bạn chỉ cần nhập nội dung và chọn Khoa/Phòng (có gợi ý tự động) rồi nhấn "LƯU NHANH".</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="step-number">B</div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Chỉnh sửa trực tiếp (Inline Edit)</h6>
+                                    <p class="text-slate-600 small mb-0">Click vào các ô như <strong>Nội dung</strong>, <strong>Ghi chú</strong> hoặc <strong>Lý do</strong> để sửa văn bản. Chọn trực tiếp ngày ở các cột thời gian.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="step-number">C</div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Tự động tính ngày Giao hàng</h6>
+                                    <p class="text-slate-600 small mb-0">Ở cột "Ngày giao hàng", bạn có thể nhập <strong>"1 tuần"</strong>, <strong>"15 ngày"</strong> hoặc <strong>"3 tháng"</strong>. Hệ thống sẽ tự động cộng thêm dựa vào <strong>"Ngày Ký HĐ"</strong>.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="step-number">D</div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Quản lý Trạng thái</h6>
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="badge-guide status-processing">ĐANG XỬ LÝ</span>
+                                        <span class="text-slate-600 small">: Khi PR đang trong quá trình thực hiện.</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="badge-guide status-completed">HOÀN THÀNH</span>
+                                        <span class="text-slate-600 small">: Khi đã giao hàng và xong hồ sơ.</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-5 d-flex flex-column">
+                    <div class="tip-box mt-0">
+                        <h6 class="fw-bold text-warning-emphasis mb-2"><i class="fas fa-lightbulb me-2"></i>Mẹo quản lý:</h6>
+                        <p class="small text-slate-700 mb-0">
+                            Hãy sử dụng bộ lọc <strong>Tháng</strong> và <strong>Năm</strong> ở thanh công cụ để tập trung xử lý các PR trong giai đoạn hiện tại, giúp dữ liệu hiển thị gọn gàng hơn.
+                        </p>
+                    </div>
+                    
+                    <div class="instruction-card p-4 mt-4 bg-light shadow-none border" style="height: auto !important;">
+                        <h6 class="fw-bold mb-3">Tiến độ (%) được tính như thế nào?</h6>
+                        <div class="progress mb-2" style="height: 8px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                        </div>
+                        <p class="text-slate-500 x-small mb-0">
+                            Hệ thống chia tiến độ làm 6 mốc chính:<br>
+                            - Nhận PR (10%)<br>
+                            - Duyệt PR (25%)<br>
+                            - Ngày báo giá (40%)<br>
+                            - Ngày làm PO (60%)<br>
+                            - Duyệt PO (80%)<br>
+                            - Ký HĐ (100%)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Tab -->
+        <div class="tab-pane fade" id="pills-account" role="tabpanel">
+            <div class="max-w-700 mx-auto">
+                <div class="instruction-card p-5 text-center">
+                    <div class="icon-box bg-rose-light mx-auto mb-4" style="width: 80px; height: 80px; font-size: 2.5rem;">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Bảo mật & Tài khoản</h4>
+                    <p class="text-slate-600 mb-4 px-lg-5">
+                        Để đảm bảo tính an toàn cho hệ thống quản lý, Admin nên cập nhật mật khẩu ít nhất 3 tháng một lần và không chia sẻ tài khoản cho người không có thẩm quyền.
+                    </p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ route('admin.change-password') }}" class="btn btn-primary px-4 py-2 rounded-pill fw-bold" style="background: var(--primary-gradient); border: none;">
+                            <i class="fas fa-lock me-2"></i>Đổi mật khẩu ngay
+                        </a>
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-bold">
+                            Về bảng điều khiển
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Quick Navigation -->
-    <div class="grid md:grid-cols-3 gap-6 mb-16">
-        <a href="#overview" class="p-6 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-50 hover:scale-[1.02] transition-all group">
-            <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M4 13h6a1 1 0 001-1V4a1 1 0 00-1-1H4a1 1 0 00-1 1v8a1 1 0 001 1zm0 8h6a1 1 0 001-1v-4a1 1 0 00-1-1H4a1 1 0 00-1 1v4a1 1 0 001 1zm10 0h6a1 1 0 001-1v-8a1 1 0 00-1-1h-6a1 1 0 00-1 1v8a1 1 0 001 1zm0-18v4a1 1 0 001 1h6a1 1 0 001-1V4a1 1 0 00-1-1h-6a1 1 0 00-1 1z"/></svg>
-            </div>
-            <h3 class="text-lg font-bold text-slate-800 mb-2">Tổng quan</h3>
-            <p class="text-sm text-slate-500">Theo dõi số liệu và biểu đồ tăng trưởng PR.</p>
-        </a>
-        <a href="#tracking" class="p-6 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-50 hover:scale-[1.02] transition-all group">
-            <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
-            <h3 class="text-lg font-bold text-slate-800 mb-2">Theo dõi PR</h3>
-            <p class="text-sm text-slate-500">Quản lý dòng thời gian và cập nhật trạng thái đơn hàng.</p>
-        </a>
-        <a href="#settings" class="p-6 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-50 hover:scale-[1.02] transition-all group">
-            <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-            </div>
-            <h3 class="text-lg font-bold text-slate-800 mb-2">Bảo mật</h3>
-            <p class="text-sm text-slate-500">Cập nhật mật khẩu và thông tin quản trị viên.</p>
-        </a>
-    </div>
-
-    <!-- Content Sections -->
-    <div class="space-y-12">
-        <!-- Section 1: Dashboard -->
-        <section id="overview" class="bg-white rounded-[2.5rem] p-10 shadow-2xl shadow-slate-200/40 relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
-                <svg class="w-64 h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M4 13h6a1 1 0 001-1V4a1 1 0 00-1-1H4a1 1 0 00-1 1v8a1 1 0 001 1zm0 8h6a1 1 0 001-1v-4a1 1 0 00-1-1H4a1 1 0 00-1 1v4a1 1 0 001 1zm10 0h6a1 1 0 001-1v-8a1 1 0 00-1-1h-6a1 1 0 00-1 1v8a1 1 0 001 1zm0-18v4a1 1 0 001 1h6a1 1 0 001-1V4a1 1 0 00-1-1h-6a1 1 0 00-1 1z"/></svg>
-            </div>
-            <div class="relative">
-                <div class="flex items-center space-x-3 mb-6">
-                    <span class="px-4 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-black uppercase tracking-widest rounded-full">Tính năng</span>
-                    <h2 class="text-2xl font-black text-slate-800">Trang Tổng Quan</h2>
-                </div>
-                <div class="grid md:grid-cols-2 gap-10">
-                    <div class="space-y-6">
-                        <div>
-                            <h4 class="font-bold text-slate-800 mb-2 flex items-center">
-                                <span class="w-6 h-6 bg-indigo-600 text-white rounded-md flex items-center justify-center text-[10px] mr-2">01</span>
-                                Thống kê YTD (Năm hiện tại)
-                            </h4>
-                            <p class="text-slate-500 text-sm leading-relaxed">Xem tổng số PR, số lượng đang xử lý và các PR đã hoàn thành trong năm. Dữ liệu tự động cập nhật theo thời gian thực.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 mb-2 flex items-center">
-                                <span class="w-6 h-6 bg-indigo-600 text-white rounded-md flex items-center justify-center text-[10px] mr-2">02</span>
-                                Biểu đồ xu hướng
-                            </h4>
-                            <p class="text-slate-500 text-sm leading-relaxed">Theo dõi biểu đồ đường để thấy sự biến động PR qua 12 tháng. Giúp dự báo khối lượng công việc trong tương lai.</p>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 rounded-3xl p-6 border border-slate-100 italic text-slate-500 text-sm leading-relaxed">
-                        <svg class="w-8 h-8 text-indigo-400 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        "Sử dụng bộ lọc năm ở góc phải phía trên biểu đồ để xem lại lịch sử dữ liệu của các năm trước đó."
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 2: Tracking -->
-        <section id="tracking" class="bg-white rounded-[2.5rem] p-10 shadow-2xl shadow-slate-200/40 relative overflow-hidden text-right">
-            <div class="absolute top-0 left-0 p-12 opacity-[0.03] pointer-events-none">
-                <svg class="w-64 h-64" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
-            <div class="relative">
-                <div class="flex items-center justify-end space-x-3 mb-6 font-bold">
-                    <h2 class="text-2xl font-black text-slate-800">Theo dõi Mua hàng</h2>
-                    <span class="px-4 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-black uppercase tracking-widest rounded-full">Trọng tâm</span>
-                </div>
-                <div class="grid md:grid-cols-2 gap-10">
-                    <div class="bg-slate-50 rounded-3xl p-6 border border-slate-100 italic text-slate-500 text-sm leading-relaxed text-left">
-                        <svg class="w-8 h-8 text-emerald-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                        "Tất cả các mốc thời gian PR được trình bày dạng Timeline. Click vào nút 'Sửa' để cập nhật nhanh các mốc ngày quan trọng."
-                    </div>
-                    <div class="space-y-6">
-                        <div>
-                            <h4 class="font-bold text-slate-800 mb-2 flex items-center justify-end">
-                                Quản lý trạng thái
-                                <span class="w-6 h-6 bg-emerald-600 text-white rounded-md flex items-center justify-center text-[10px] ml-2">03</span>
-                            </h4>
-                            <p class="text-slate-500 text-sm leading-relaxed">Cập nhật trạng thái từ 'Chờ báo giá' đến 'Hoàn thành'. Màu sắc huy hiệu sẽ tự động thay đổi theo độ ưu tiên và tiến độ.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 mb-2 flex items-center justify-end">
-                                Xuất báo cáo Excel
-                                <span class="w-6 h-6 bg-emerald-600 text-white rounded-md flex items-center justify-center text-[10px] ml-2">04</span>
-                            </h4>
-                            <p class="text-slate-500 text-sm leading-relaxed">Dễ dàng xuất toàn bộ dữ liệu theo dõi ra file Excel chuyên nghiệp chỉ với 1 click chuột để báo cáo lãnh đạo.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Security -->
-        <section id="settings" class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] p-10 shadow-2xl shadow-blue-200 relative overflow-hidden text-white">
-            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-            <div class="relative z-10">
-                <div class="flex items-center space-x-3 mb-8">
-                    <span class="px-4 py-1.5 bg-white/20 backdrop-blur-md text-white text-xs font-black uppercase tracking-widest rounded-full border border-white/20">Bảo mật</span>
-                    <h2 class="text-2xl font-black">Cài đặt & Bảo mật</h2>
-                </div>
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div class="space-y-6">
-                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:bg-white/15 transition-all">
-                            <h4 class="font-bold text-white mb-2 text-lg">Đổi mật khẩu định kỳ</h4>
-                            <p class="text-blue-100 text-sm leading-relaxed">Luôn đảm bảo mật khẩu mới khác ít nhất 8 ký tự và khác hoàn toàn mật khẩu cũ. Hệ thống có cơ chế kiểm tra tính duy nhất để bảo vệ bạn.</p>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:bg-white/15 transition-all">
-                            <h4 class="font-bold text-white mb-2 text-lg">Quản lý phiên đăng xuất</h4>
-                            <p class="text-blue-100 text-sm leading-relaxed">Luôn nhớ đăng xuất khi sử dụng máy tính công cộng. Nút đăng xuất màu đỏ nổi bật ở cuối sidebar giúp bạn thoát nhanh chóng.</p>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="inline-block p-8 bg-white/10 rounded-full border-4 border-white/5 mb-6 animate-bounce">
-                            <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                        </div>
-                        <p class="font-black text-xl">Dữ liệu của bạn luôn được mã hóa an toàn nhất!</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Footer Action -->
-    <div class="mt-20 p-8 bg-white rounded-3xl border-2 border-dashed border-slate-200 text-center">
-        <h4 class="text-xl font-bold text-slate-800 mb-2">Bạn vẫn cần trợ giúp?</h4>
-        <p class="text-slate-500 mb-6">Đội ngũ kỹ thuật luôn sẵn sàng hỗ trợ bạn 24/7.</p>
-        <a href="mailto:support@hospital.com" class="inline-flex items-center space-x-2 px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-            <span>Liên hệ hỗ trợ kỹ thuật</span>
-        </a>
+    <!-- Footer Help -->
+    <div class="text-center mt-5 pt-4 border-top">
+        <p class="text-slate-400 small">
+            Nếu gặp khó khăn trong quá trình sử dụng, vui lòng liên hệ <strong>Phòng Công nghệ Thông tin</strong> để được hỗ trợ.<br>
+            &copy; {{ date('Y') }} Bệnh Viện Đa Khoa Tâm Trí Cao Lãnh.
+        </p>
     </div>
 </div>
+
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+@endsection
+
 @endsection

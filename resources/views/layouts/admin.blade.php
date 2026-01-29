@@ -14,6 +14,9 @@
             height: 100vh;
             overflow: hidden;
         }
+        a {
+            text-decoration: none !important;
+        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen flex">
