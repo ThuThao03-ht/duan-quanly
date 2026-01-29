@@ -40,14 +40,15 @@
         }
 
         /* Sticky Columns */
-        .sticky-col-1 { position: sticky; left: 0; z-index: 30; background: white !important; min-width: 60px; box-shadow: inset -1px 0 0 #e2e8f0; }
-        .sticky-col-2 { position: sticky; left: 60px; z-index: 30; background: white !important; min-width: 150px; box-shadow: inset -1px 0 0 #e2e8f0; }
-        .sticky-col-3 { position: sticky; left: 210px; z-index: 30; background: white !important; min-width: 300px; box-shadow: inset -1px 0 0 #e2e8f0; }
-        .sticky-col-4 { position: sticky; left: 510px; z-index: 30; background: white !important; min-width: 110px; box-shadow: inset -1px 0 0 #e2e8f0; }
-        .sticky-col-5 { position: sticky; left: 620px; z-index: 30; background: white !important; min-width: 110px; box-shadow: inset -1px 0 0 #e2e8f0; }
+        .sticky-col-0 { position: sticky; left: 0; z-index: 30; background: white !important; min-width: 40px; border-right: none !important; }
+        .sticky-col-1 { position: sticky; left: 40px; z-index: 30; background: white !important; min-width: 60px; box-shadow: inset -1px 0 0 #e2e8f0; }
+        .sticky-col-2 { position: sticky; left: 100px; z-index: 30; background: white !important; min-width: 150px; box-shadow: inset -1px 0 0 #e2e8f0; }
+        .sticky-col-3 { position: sticky; left: 250px; z-index: 30; background: white !important; min-width: 300px; box-shadow: inset -1px 0 0 #e2e8f0; }
+        .sticky-col-4 { position: sticky; left: 550px; z-index: 30; background: white !important; min-width: 110px; box-shadow: inset -1px 0 0 #e2e8f0; }
+        .sticky-col-5 { position: sticky; left: 660px; z-index: 30; background: white !important; min-width: 110px; box-shadow: inset -1px 0 0 #e2e8f0; }
 
         /* Elevation for sticky headers in sticky columns */
-        thead th.sticky-col-1, thead th.sticky-col-2, thead th.sticky-col-3,
+        thead th.sticky-col-0, thead th.sticky-col-1, thead th.sticky-col-2, thead th.sticky-col-3,
         thead th.sticky-col-4, thead th.sticky-col-5 { 
             z-index: 50; 
             background: #eef2ff !important;
@@ -75,10 +76,29 @@
         .editable:hover { background: #f1f5f9; }
         .editing { background: white !important; box-shadow: 0 0 0 2px #3b82f6; outline: none; }
         
+        .row-editing-indicator {
+            display: none;
+            color: #3b82f6;
+            transform: rotate(90deg);
+            animation: bounce-horizontal 2s infinite;
+        }
+        tr.active-editing .row-editing-indicator {
+            display: inline-block;
+        }
+        tr.active-editing .row-stt-text {
+            display: inline-block;
+            opacity: 0.5;
+        }
+        @keyframes bounce-horizontal {
+            0%, 100% { transform: rotate(90deg) translateX(0); }
+            50% { transform: rotate(90deg) translateX(5px); }
+        }
+        
         /* Zebra Striping (Blue Theme) */
         #pr-table-body tr:nth-child(even) td {
             background-color: #f0f7ff;
         }
+        #pr-table-body tr:nth-child(even) .sticky-col-0,
         #pr-table-body tr:nth-child(even) .sticky-col-1,
         #pr-table-body tr:nth-child(even) .sticky-col-2,
         #pr-table-body tr:nth-child(even) .sticky-col-3,
@@ -89,6 +109,7 @@
 
         /* Hover Effect (Green Theme) */
         #pr-table-body tr:hover td,
+        #pr-table-body tr:hover .sticky-col-0,
         #pr-table-body tr:hover .sticky-col-1,
         #pr-table-body tr:hover .sticky-col-2,
         #pr-table-body tr:hover .sticky-col-3,
@@ -185,10 +206,17 @@
         .progress-bar-container {
             width: 100px;
             background-color: #f1f5f9;
-            height: 6px;
+            height: 10px; /* Thicker for visibility */
             border-radius: 10px;
             border: 1px solid #e2e8f0;
             overflow: hidden;
+        }
+        .percent-bar {
+            background-color: #22c55e !important; /* Force Green 500 */
+            height: 100%;
+        }
+        .percentage-text {
+            color: #16a34a !important; /* Text green 600 */
         }
     </style>
 @endsection
@@ -229,8 +257,9 @@
                 <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 Xóa lọc
             </button>
-            <button onclick="window.location.reload()" class="bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg hover:bg-slate-50 transition-all flex items-center shadow-sm text-xs font-bold">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> Làm mới
+            <button onclick="exportExcel()" class="bg-white border border-slate-200 text-slate-600 hover:text-green-600 px-4 py-2 rounded-lg transition-all flex items-center shadow-sm text-xs font-bold uppercase tracking-tight">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                Xuất Excel
             </button>
         </div>
     </div>
@@ -247,6 +276,7 @@
             <table class="text-sm">
                 <thead>
                     <tr class="text-slate-600 font-bold uppercase tracking-wider bg-slate-50">
+                        <th class="p-4 text-center sticky-col-0"></th>
                         <th class="p-4 text-center sticky-col-1">STT</th>
                         <th class="p-4 text-left sticky-col-2">Khoa/phòng</th>
                         <th class="p-4 text-left sticky-col-3">Nội dung mua sắm</th>
@@ -266,15 +296,18 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     <!-- Dòng nhập nhanh mới -->
-                    <tr class="bg-blue-50/50 border-b-2 border-blue-100">
+                    <tr id="new-pr-row" class="bg-blue-50/50 border-b-2 border-blue-100">
+                        <td class="p-4 text-center sticky-col-0"></td>
                         <td class="p-4 text-blue-600 font-bold italic text-center text-xs sticky-col-1">NEW</td>
                         <td class="p-4 sticky-col-2">
-                            <select id="new_department_id" class="w-full bg-white border border-slate-200 rounded px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500/20">
-                                <option value="">-- Chọn --</option>
+                            <input type="text" id="new_department_name" list="department_list" autocomplete="off"
+                                placeholder="Tìm hoặc nhập mới..."
+                                class="w-full bg-white border border-slate-200 rounded px-2 py-1.5 outline-none focus:ring-2 focus:ring-blue-500/20 text-sm font-medium">
+                            <datalist id="department_list">
                                 @foreach($departments as $dept)
-                                    <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                    <option value="{{ $dept->name }}" data-id="{{ $dept->id }}"></option>
                                 @endforeach
-                            </select>
+                            </datalist>
                         </td>
                         <td class="p-4 sticky-col-3">
                             <input type="text" id="new_content" placeholder="Nội dung..." 
@@ -339,7 +372,16 @@
                     <tbody id="pr-table-body" class="divide-y divide-slate-100">
                     @forelse($requests as $request)
                     <tr class="hover:bg-blue-50/30 transition-colors" data-pr-id="{{ $request->id }}">
-                        <td class="p-4 text-slate-500 font-medium text-center sticky-col-1">{{ $request->id }}</td>
+                        <td class="p-4 text-center sticky-col-0">
+                            <span class="row-editing-indicator">
+                                <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </span>
+                        </td>
+                        <td class="p-4 text-slate-500 font-medium text-center sticky-col-1">
+                            <span class="row-stt-text">{{ $request->id }}</span>
+                        </td>
                         <td class="p-4 font-semibold text-slate-700 sticky-col-2">{{ $request->department->name ?? 'N/A' }}</td>
                         <td class="p-4 sticky-col-3 content-wrap">
                             <div class="editable" data-id="{{ $request->id }}" data-field="content">{{ $request->content }}</div>
@@ -371,7 +413,7 @@
                                     <div class="percent-bar {{ $prog['color'] }} h-full transition-all duration-500" style="width: {{ $prog['percent'] }}%"></div>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <span class="text-xs font-bold text-blue-600 percentage-text">{{ $prog['percent'] }}%</span>
+                                    <span class="text-xs font-bold percentage-text">{{ $prog['percent'] }}%</span>
                                     <span class="status-pill label-text">{{ $prog['label'] }}</span>
                                 </div>
                             </div>
@@ -420,12 +462,12 @@
                     </tr>
                     @empty
                     <tr id="empty-row">
-                        <td colspan="15" class="p-12 text-center text-slate-400 italic bg-white">Chưa có yêu cầu nào được tạo.</td>
+                        <td colspan="16" class="p-12 text-center text-slate-400 italic bg-white">Chưa có yêu cầu nào được tạo.</td>
                     </tr>
                     @endforelse
                     
                     <tr id="no-results-row" style="display: none;">
-                        <td colspan="15" class="p-12 text-center text-slate-400 italic bg-white">
+                        <td colspan="16" class="p-12 text-center text-slate-400 italic bg-white">
                             <div class="flex flex-col items-center">
                                 Không có dữ liệu phù hợp với bộ lọc hiện tại.
                             </div>
@@ -443,10 +485,19 @@
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             const tableBody = document.getElementById('pr-table-body');
 
+            // Cập nhật tiến độ dòng NEW khi có thay đổi
+            const newRow = document.getElementById('new-pr-row');
+            if (newRow) {
+                newRow.querySelectorAll('input, select').forEach(input => {
+                    input.addEventListener('change', () => refreshProgress(newRow));
+                });
+            }
+
             async function saveNewPR() {
+                const deptName = document.getElementById('new_department_name').value;
                 const data = {
                     content: document.getElementById('new_content').value,
-                    department_id: document.getElementById('new_department_id').value,
+                    department_id: deptName, // Send name, backend will handle ID or Create
                     status: document.getElementById('new_status').value,
                     pr_received_date: document.getElementById('new_pr_received_date').value,
                     pr_approved_date: document.getElementById('new_pr_approved_date').value,
@@ -477,6 +528,7 @@
                         const json = await response.json();
                         addTableRow(json.data);
                         resetNewRow();
+                        refreshProgress(document.getElementById('new-pr-row'));
                     } else {
                         const err = await response.json();
                         alert('Lỗi: ' + (err.message || 'Không thể lưu'));
@@ -489,6 +541,7 @@
 
             function resetNewRow() {
                 document.getElementById('new_content').value = '';
+                document.getElementById('new_department_name').value = '';
                 document.getElementById('new_delivery_note').value = '';
                 document.querySelectorAll('.bg-blue-50\\/50 input[type="date"]').forEach(input => input.value = '');
             }
@@ -504,7 +557,16 @@
                 const t = pr.timeline || {};
                 
                 tr.innerHTML = `
-                    <td class="p-4 text-slate-500 font-medium text-center sticky-col-1">${pr.id}</td>
+                    <td class="p-4 text-center sticky-col-0">
+                        <span class="row-editing-indicator">
+                            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </span>
+                    </td>
+                    <td class="p-4 text-slate-500 font-medium text-center sticky-col-1">
+                        <span class="row-stt-text">${pr.id}</span>
+                    </td>
                     <td class="p-4 font-semibold text-slate-700 sticky-col-2">${pr.department ? pr.department.name : 'N/A'}</td>
                     <td class="p-4 sticky-col-3 content-wrap">
                         <div class="editable" data-id="${pr.id}" data-field="content">${pr.content}</div>
@@ -530,11 +592,11 @@
                     <td class="p-4 text-center progress-cell">
                          <div class="flex flex-col items-start space-y-2 min-w-[120px]">
                             <div class="progress-bar-container">
-                                <div class="percent-bar bg-amber-400 h-full transition-all duration-500" style="width: 0%"></div>
+                                <div class="percent-bar h-full transition-all duration-500" style="width: ${pr.progress_info ? pr.progress_info.percent : 0}%"></div>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <span class="text-xs font-bold text-blue-600 percentage-text">0%</span>
-                                <span class="status-pill label-text">Chờ xử lý</span>
+                                <span class="text-xs font-bold percentage-text">${pr.progress_info ? pr.progress_info.percent : 0}%</span>
+                                <span class="status-pill label-text">${pr.progress_info ? pr.progress_info.label : 'Chờ xử lý'}</span>
                             </div>
                         </div>
                     </td>
@@ -572,6 +634,7 @@
                 
                 tableBody.prepend(tr);
                 bindRowEvents(tr);
+                refreshProgress(tr); // Force final progress sync
                 setTimeout(filterTable, 100); // Đảm bảo dòng mới tuân thủ bộ lọc
             }
 
@@ -625,6 +688,16 @@
                 filterTable();
             }
             window.clearFilters = clearFilters;
+
+            function exportExcel() {
+                const month = document.getElementById('filter_month').value;
+                const year = document.getElementById('filter_year').value;
+                const status = document.getElementById('filter_status').value;
+                
+                const url = `{{ route('admin.tracking.export') }}?month=${month}&year=${year}&status=${status}`;
+                window.location.href = url;
+            }
+            window.exportExcel = exportExcel;
 
             document.getElementById('filter_status').onchange = filterTable;
             document.getElementById('filter_month').onchange = filterTable;
@@ -738,6 +811,22 @@
                 if (e.key === 'Enter') this.blur();
             };
         }
+        // =========================
+        // ON FOCUS & BLUR FOR INDICATOR
+        // =========================
+        el.onfocus = function() {
+            this.closest('tr').classList.add('active-editing');
+        };
+        el.addEventListener('blur', function() {
+            // Delay small time to check if we moved to another field in same row
+            setTimeout(() => {
+                const activeEl = document.activeElement;
+                if (!activeEl || activeEl.closest('tr') !== this.closest('tr')) {
+                    this.closest('tr').classList.remove('active-editing');
+                }
+            }, 50);
+        });
+
     });
 }
 
@@ -762,14 +851,15 @@
             window.updateStatusStyle = updateStatusStyle;
 
             function refreshProgress(tr) {
-                if (!tr || tr.classList.contains('bg-blue-50/50')) return;
+                if (!tr) return;
 
-                const statusSelect = tr.querySelector('.status-select');
+                const statusSelect = tr.querySelector('.status-select') || tr.querySelector('#new_status');
                 const isHoanThanh = statusSelect && statusSelect.value === 'Hoàn thành';
                 
                 // Get value of all potential date fields
                 const val = (field) => {
-                    const el = tr.querySelector(`[data-field="${field}"]`);
+                    let el = tr.querySelector(`[data-field="${field}"]`);
+                    if (!el) el = tr.querySelector(`#new_${field}`); // Hỗ trợ lấy dữ liệu từ dòng NEW
                     return el && el.value && el.value.trim() !== '' ? el.value : null;
                 };
 
@@ -814,11 +904,6 @@
                     bar.style.width = percent + '%';
                     text.innerText = percent + '%';
                     if (labelEl) labelEl.innerText = label;
-                    
-                    bar.classList.remove('bg-amber-400', 'bg-blue-500', 'bg-green-500');
-                    if (percent < 40) bar.classList.add('bg-amber-400');
-                    else if (percent < 80) bar.classList.add('bg-blue-500');
-                    else bar.classList.add('bg-green-500');
                 }
             }
 
@@ -870,8 +955,10 @@
                 el.innerHTML = '';
                 el.appendChild(input);
                 input.focus();
+                el.closest('tr').classList.add('active-editing');
                 
                 input.onblur = function() {
+                    el.closest('tr').classList.remove('active-editing');
                     const newText = this.value;
                     el.innerText = newText || '...';
                     if (newText !== originalText) {
