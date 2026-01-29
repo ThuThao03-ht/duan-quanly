@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
 class AuthController extends Controller
 {
     public function showLoginForm()
@@ -17,6 +18,8 @@ class AuthController extends Controller
             'name' => ['required', 'string'],
             'password' => ['required'],
         ]);
+
+
 
         if (auth()->attempt($credentials, $request->remember)) {
             $request->session()->regenerate();

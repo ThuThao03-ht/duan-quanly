@@ -82,3 +82,65 @@ php artisan db:seed --class=TrackingSeeder
 npm install
 
 npm run build
+
+
+# Cập nhật tính năng tạo Khoa/Phòng và Tài khoản
+
+# Các thay đổi chính
+### 1. Cho phép nhập tên Khoa/Phòng mới
+Tại giao diện "Theo dõi Mua hàng" (Admin Tracking), ô nhập liệu Khoa/Phòng (input kết hợp datalist) cho phép:
+
+Chọn khoa cũ: Tìm và chọn từ danh sách có sẵn.
+
+Nhập mới: Gõ tên khoa/phòng chưa có trong hệ thống (Ví dụ: Khoa Tim Mạch).
+
+### 2. Tự động tạo dữ liệu (Backend)
+
+Khi bạn nhập một tên khoa mới và nhấn lưu, hệ thống sẽ:
+
+Tạo Khoa/Phòng mới: Lưu tên khoa vào bảng departments.
+
+Tự động tạo tài khoản quản trị cho khoa đó:
+
+Username: Được tạo tự động từ tên khoa bằng cách chuyển sang dạng không dấu, nối bằng gạch ngang (slug).
+
+Ví dụ: Khoa Nhi -> khoa-nhi
+
+Ví dụ: Xét nghiệm -> xet-nghiem
+
+Password: Mặc định là 123456 (được mã hóa tự động khi lưu).
+
+Phân quyền: Tài khoản này chỉ xem được dữ liệu của chính khoa đó.
+
+Trường hợp 2: Tên Khoa mới nhưng trùng Username với khoa cũ
+
+Ví dụ: Đã có Khoa Nhi (user: khoa-nhi). Bạn nhập thêm: Khoa Nhĩ (hoặc KHOA NHI, Khoa. Nhi).
+
+Username dự kiến: khoa-nhi.
+
+Hệ thống phát hiện user khoa-nhi ĐÃ TỒN TẠI.
+
+Xử lý: Hệ thống sẽ KHÔNG tạo user mới (không có chuyện khoa-nhi1). Thay vào đó, nó sẽ tự động lấy thông tin Khoa Nhi cũ để gắn vào đơn hàng này.
+
+Kết quả: Đơn hàng mới vẫn thuộc về khoa/user cũ. Đảm bảo MỖI KHOA CHỈ CÓ 1 TÀI KHOẢN DUY NHẤT.
+
+
+### 3. File chỉnh sửa
+app/Http/Controllers/Admin/TrackingController.php
+:
+Đã thêm thư viện Illuminate\Support\Str.
+Cập nhật logic tạo user: sử dụng Str::slug($deptName) thay vì dùng mã viết tắt (code).
+Kiểm tra
+Bạn có thể thử nghiệm ngay trên giao diện:
+
+Vào trang Tracking Admin.
+
+Tại dòng NEW, ô Khoa/Phòng, gõ tên một khoa mới (ví dụ: Khoa Dinh Dưỡng).
+
+Điền các thông tin khác và nhấn LƯU NHANH.
+
+Kiểm tra Database hoặc thử đăng nhập với:
+
+User: khoa-dinh-duong
+
+Pass: 123456

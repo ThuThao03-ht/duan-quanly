@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Exports\PurchaseRequestsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class TrackingController extends Controller
 {
@@ -50,29 +51,47 @@ class TrackingController extends Controller
             $department = Department::where('name', $deptName)->first();
             
             if (!$department) {
-                // Create Department
-                $department = Department::create([
-                    'name' => $deptName,
-                    'code' => $this->generateInitials($deptName)
-                ]);
-                
-                // Create User for this department
-                $username = strtolower($department->code);
-                
-                // Ensure unique username
-                $originalUsername = $username;
-                $count = 1;
-                while (User::where('name', $username)->exists()) {
-                    $username = $originalUsername . $count;
-                    $count++;
-                }
+                // Calculate expected username for the new department
+                $username = Str::slug($deptName);
 
-                User::create([
-                    'name' => $username,
-                    'password' => '123456', // Fixed password as requested
-                    'role' => 'department',
-                    'department_id' => $department->id,
-                ]);
+                // Check if a user with this username ALREADY exists
+                $existingUser = User::where('name', $username)->first();
+
+                if ($existingUser) {
+                    // User exists -> Reuse the existing department attached to this user
+                    // This handles cases like "Khoa Nhi" (existing) vs "Khoa Nhĩ" (new input) -> same slug
+                    $department = $existingUser->department;
+
+                    // Ideally, we should update the search name to the existing one to match? 
+                    // But for now, just reusing the ID is sufficient to link them.
+                    
+                    // If for disjoint reasons the user has no department, we might still need to create one,
+                    // but assuming data integrity:
+                    if (!$department) {
+                         // Edge case: User exists but has no department? 
+                         // Fallback: Create department but link to THIS user? 
+                         // Or just create new department and fail user creation?
+                         // Let's assume strict 1-1: Use this user.
+                         $department = Department::create([
+                            'name' => $deptName,
+                            'code' => $this->generateInitials($deptName)
+                         ]);
+                         $existingUser->update(['department_id' => $department->id]);
+                    }
+                } else {
+                    // User does NOT exist -> Create fresh Department and User
+                    $department = Department::create([
+                        'name' => $deptName,
+                        'code' => $this->generateInitials($deptName)
+                    ]);
+                    
+                    User::create([
+                        'name' => $username,
+                        'password' => '123456', 
+                        'role' => 'department',
+                        'department_id' => $department->id,
+                    ]);
+                }
             }
             $deptId = $department->id;
         }
