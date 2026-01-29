@@ -122,14 +122,6 @@
     .status-processing { background-color: #fffbeb; color: #d97706; }
     .status-completed { background-color: #ecfdf5; color: #10b981; }
 
-    .img-demo {
-        border-radius: 1rem;
-        border: 1px solid #e2e8f0;
-        margin-top: 1rem;
-        width: 100%;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    }
-
     .section-title {
         font-weight: 800;
         color: #1e293b;
@@ -173,7 +165,7 @@
     <div class="hero-section text-center">
         <h1 class="fw-black mb-3">Hướng dẫn Quản trị Hệ thống</h1>
         <p class="lead opacity-75 mb-0 mx-auto" style="max-width: 700px;">
-            Chào mừng Admin! Đây là trang hỗ trợ giúp bạn nắm vững các thao tác và quy trình quản lý PR trong hệ thống.
+            Chào mừng Admin! Đây là trang hỗ trợ giúp bạn nắm vững các thao tác quản lý PR, cài đặt hệ thống và theo dõi tiến độ mua sắm hiệu quả nhất.
         </p>
     </div>
 
@@ -186,12 +178,12 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="pills-tracking-tab" data-bs-toggle="pill" data-bs-target="#pills-tracking" type="button" role="tab">
-                <i class="fas fa-list-check me-2"></i>Theo dõi PR
+                <i class="fas fa-list-check me-2"></i>Quy trình PR & Tiến độ
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-account-tab" data-bs-toggle="pill" data-bs-target="#pills-account" type="button" role="tab">
-                <i class="fas fa-user-shield me-2"></i>Tài khoản
+            <button class="nav-link" id="pills-settings-tab" data-bs-toggle="pill" data-bs-target="#pills-settings" type="button" role="tab">
+                <i class="fas fa-cogs me-2"></i>Cài đặt & Dữ liệu
             </button>
         </li>
     </ul>
@@ -205,9 +197,9 @@
                         <div class="icon-box bg-indigo-light">
                             <i class="fas fa-chart-pie"></i>
                         </div>
-                        <h5 class="fw-bold mb-3">Thống kê Real-time</h5>
+                        <h5 class="fw-bold mb-3">Thao tác Thông minh</h5>
                         <p class="text-slate-600 small">
-                            Trang Dashboard cung cấp cái nhìn tổng thể về số lượng PR, tỷ lệ hoàn thành và xu hướng mua sắm theo từng tháng.
+                            Hỗ trợ sửa nhanh trực tiếp (Inline Edit), Double-click để xóa nhanh, và tự động tính ngày giao hàng dựa trên ngôn ngữ tự nhiên (ví dụ: "1 tuần").
                         </p>
                     </div>
                 </div>
@@ -216,9 +208,9 @@
                         <div class="icon-box bg-amber-light">
                             <i class="fas fa-bolt"></i>
                         </div>
-                        <h5 class="fw-bold mb-3">Thao tác Nhanh</h5>
+                        <h5 class="fw-bold mb-3">Tự động hóa Tiến độ</h5>
                         <p class="text-slate-600 small">
-                            Hệ thống tối ưu hóa việc nhập liệu với các ô chỉnh sửa trực tiếp (Inline Editing), giúp tiết kiệm 50% thời gian xử lý.
+                            Thanh tiến độ (Progress Bar) và trạng thái được hệ thống tự động cập nhật dựa trên số lượng cột ngày tháng đã được lấp đầy.
                         </p>
                     </div>
                 </div>
@@ -227,147 +219,183 @@
                         <div class="icon-box bg-emerald-light">
                             <i class="fas fa-file-export"></i>
                         </div>
-                        <h5 class="fw-bold mb-3">Xuất Báo cáo</h5>
+                        <h5 class="fw-bold mb-3">Quản lý Dữ liệu</h5>
                         <p class="text-slate-600 small">
-                            Dễ dàng kết xuất dữ liệu sang Excel với đầy đủ các mốc thời gian và ghi chú để phục vụ việc lưu trữ và báo cáo.
+                            Hỗ trợ Sao lưu dữ liệu an toàn về máy, Nhập liệu hàng loạt từ Excel và Xuất báo cáo chi tiết chỉ với một cú click chuột.
                         </p>
                     </div>
                 </div>
             </div>
 
             <div class="mt-5">
-                <h4 class="section-title">Luồng quy trình xử lý</h4>
+                <h4 class="section-title">Các phím tắt & Thao tác nhanh</h4>
                 <div class="row mt-4">
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="d-flex align-items-center">
-                            <div class="step-number">01</div>
-                            <div>
-                                <h6 class="fw-bold mb-0">Tiếp nhận PR</h6>
-                                <small class="text-muted">Nhập ngày nhận yêu cầu</small>
-                            </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="bg-white p-4 rounded-4 border">
+                            <h6 class="fw-bold text-slate-800 mb-3"><i class="fas fa-keyboard me-2 text-primary"></i>Phím tắt Bàn phím</h6>
+                            <ul class="feature-list mb-0">
+                                <li class="mb-2 p-0 border-0">
+                                    <span class="badge bg-light text-dark border me-2">Double Click</span> 
+                                    <span class="text-sm">Chọn một dòng để thao tác</span>
+                                </li>
+                                <li class="mb-2 p-0 border-0">
+                                    <span class="badge bg-light text-dark border me-2">Delete / Backspace</span> 
+                                    <span class="text-sm">Xóa dòng đã chọn (Có xác nhận)</span>
+                                </li>
+                                <li class="mb-0 p-0 border-0">
+                                    <span class="badge bg-light text-dark border me-2">Click ra ngoài</span> 
+                                    <span class="text-sm">Hủy chọn dòng hiện tại</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="d-flex align-items-center">
-                            <div class="step-number">02</div>
-                            <div>
-                                <h6 class="fw-bold mb-0">Xử lý PO</h6>
-                                <small class="text-muted">Báo giá & Duyệt PO</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="d-flex align-items-center">
-                            <div class="step-number">03</div>
-                            <div>
-                                <h6 class="fw-bold mb-0">Ký kết HĐ</h6>
-                                <small class="text-muted">Hoàn thiện thủ tục</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="d-flex align-items-center">
-                            <div class="step-number">04</div>
-                            <div>
-                                <h6 class="fw-bold mb-0">Giao hàng</h6>
-                                <small class="text-muted">Hoàn thành PR</small>
-                            </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="bg-white p-4 rounded-4 border">
+                            <h6 class="fw-bold text-slate-800 mb-3"><i class="fas fa-magic me-2 text-warning"></i>Nhập liệu Thông minh</h6>
+                            <ul class="feature-list mb-0">
+                                <li class="mb-2 p-0 border-0">
+                                    <span class="text-sm">Nhập <strong>"1 tuần"</strong>, <strong>"15 ngày"</strong> vào cột Ngày giao hàng → Tự cộng ngày.</span>
+                                </li>
+                                <li class="mb-2 p-0 border-0">
+                                    <span class="text-sm">Nhập tên Khoa/Phòng mới → Hệ thống tự tạo Khoa & Tài khoản.</span>
+                                </li>
+                                <li class="mb-0 p-0 border-0">
+                                    <span class="text-sm">Lọc theo <strong>Tháng/Năm</strong> → STT tự động đánh lại từ 1.</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Tracking Tab -->
+        <!-- Tracking & Progress Tab -->
         <div class="tab-pane fade" id="pills-tracking" role="tabpanel">
             <div class="row g-4">
                 <div class="col-lg-7">
                     <div class="instruction-card p-4">
-                        <h5 class="fw-bold mb-4">Hướng dẫn chi tiết Trang Theo dõi</h5>
+                        <h5 class="fw-bold mb-4">Chi tiết Quy trình Mua sắm (PR)</h5>
                         <ul class="feature-list">
                             <li>
-                                <div class="step-number">A</div>
+                                <div class="step-number">1</div>
                                 <div>
-                                    <h6 class="fw-bold mb-1">Thêm mới PR (Dòng NEW)</h6>
-                                    <p class="text-slate-600 small mb-0">Sử dụng dòng trên cùng có màu xanh nhạt. Bạn chỉ cần nhập nội dung và chọn Khoa/Phòng (có gợi ý tự động) rồi nhấn "LƯU NHANH".</p>
+                                    <h6 class="fw-bold mb-1">Thêm mới PR</h6>
+                                    <p class="text-slate-600 small mb-0">Nhập ở dòng đầu tiên (màu xanh). Chọn khoa, nhập nội dung và nhấn "Lưu nhanh".</p>
                                 </div>
                             </li>
                             <li>
-                                <div class="step-number">B</div>
+                                <div class="step-number">2</div>
                                 <div>
-                                    <h6 class="fw-bold mb-1">Chỉnh sửa trực tiếp (Inline Edit)</h6>
-                                    <p class="text-slate-600 small mb-0">Click vào các ô như <strong>Nội dung</strong>, <strong>Ghi chú</strong> hoặc <strong>Lý do</strong> để sửa văn bản. Chọn trực tiếp ngày ở các cột thời gian.</p>
+                                    <h6 class="fw-bold mb-1">Cập nhật các mốc thời gian</h6>
+                                    <p class="text-slate-600 small mb-0">Lần lượt điền các ngày: Nhận PR, Duyệt PR, Báo giá, Làm PO, Duyệt PO, Ký HĐ, Nhận hàng.</p>
                                 </div>
                             </li>
                             <li>
-                                <div class="step-number">C</div>
+                                <div class="step-number">3</div>
                                 <div>
-                                    <h6 class="fw-bold mb-1">Tự động tính ngày Giao hàng</h6>
-                                    <p class="text-slate-600 small mb-0">Ở cột "Ngày giao hàng", bạn có thể nhập <strong>"1 tuần"</strong>, <strong>"15 ngày"</strong> hoặc <strong>"3 tháng"</strong>. Hệ thống sẽ tự động cộng thêm dựa vào <strong>"Ngày Ký HĐ"</strong>.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="step-number">D</div>
-                                <div>
-                                    <h6 class="fw-bold mb-1">Quản lý Trạng thái</h6>
-                                    <div class="d-flex align-items-center gap-2 mb-1">
-                                        <span class="badge-guide status-processing">ĐANG XỬ LÝ</span>
-                                        <span class="text-slate-600 small">: Khi PR đang trong quá trình thực hiện.</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="badge-guide status-completed">HOÀN THÀNH</span>
-                                        <span class="text-slate-600 small">: Khi đã giao hàng và xong hồ sơ.</span>
-                                    </div>
+                                    <h6 class="fw-bold mb-1">Hoàn thành</h6>
+                                    <p class="text-slate-600 small mb-0">Khi hoàn tất quy trình, đổi trạng thái sang "Hoàn thành" hoặc điền đủ các ngày để hệ thống tự cập nhật.</p>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-5 d-flex flex-column">
-                    <div class="tip-box mt-0">
-                        <h6 class="fw-bold text-warning-emphasis mb-2"><i class="fas fa-lightbulb me-2"></i>Mẹo quản lý:</h6>
-                        <p class="small text-slate-700 mb-0">
-                            Hãy sử dụng bộ lọc <strong>Tháng</strong> và <strong>Năm</strong> ở thanh công cụ để tập trung xử lý các PR trong giai đoạn hiện tại, giúp dữ liệu hiển thị gọn gàng hơn.
+                <div class="col-lg-5">
+                    <div class="instruction-card p-4 bg-light shadow-none border" style="height: auto !important;">
+                        <h6 class="fw-bold mb-3 text-primary"><i class="fas fa-calculator me-2"></i>Cách tính Tiến độ (%)</h6>
+                        <p class="text-slate-500 x-small mb-3">
+                            Tiến độ được tính dựa trên số bước đã hoàn thành (đã có ngày) trên tổng số bước (6 hoặc 7 bước nếu có Hợp đồng).
                         </p>
-                    </div>
-                    
-                    <div class="instruction-card p-4 mt-4 bg-light shadow-none border" style="height: auto !important;">
-                        <h6 class="fw-bold mb-3">Tiến độ (%) được tính như thế nào?</h6>
-                        <div class="progress mb-2" style="height: 8px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                        
+                        <div class="progress mb-3" style="height: 12px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 30%">30%</div>
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 40%">70%</div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 30%">100%</div>
                         </div>
-                        <p class="text-slate-500 x-small mb-0">
-                            Hệ thống chia tiến độ làm 6 mốc chính:<br>
-                            - Nhận PR (10%)<br>
-                            - Duyệt PR (25%)<br>
-                            - Ngày báo giá (40%)<br>
-                            - Ngày làm PO (60%)<br>
-                            - Duyệt PO (80%)<br>
-                            - Ký HĐ (100%)
-                        </p>
+
+                        <ul class="list-unstyled text-sm text-slate-600 space-y-2">
+                            <li class="d-flex justify-content-between border-bottom pb-2">
+                                <span>1. Nhận PR</span>
+                                <span class="fw-bold">~16%</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom pb-2">
+                                <span>2. Duyệt PR (chờ báo giá)</span>
+                                <span class="fw-bold">~33%</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom pb-2">
+                                <span>3. Có Báo giá (Chờ/Làm PO)</span>
+                                <span class="fw-bold">~50%</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom pb-2">
+                                <span>4. PO được tạo</span>
+                                <span class="fw-bold">~66%</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom pb-2">
+                                <span>5. PO được duyệt</span>
+                                <span class="fw-bold">~83%</span>
+                            </li>
+                            <li class="d-flex justify-content-between pb-2">
+                                <span>6. Nhận hàng / Ký HĐ</span>
+                                <span class="fw-bold text-success">100%</span>
+                            </li>
+                        </ul>
+                        <div class="mt-3 p-2 bg-white rounded border border-dashed text-xs text-slate-500">
+                            <strong>Lưu ý:</strong> Nếu có bước "Ký Hợp đồng", quy trình sẽ tự động mở rộng thành 7 bước và tỷ lệ % sẽ được chia lại tương ứng.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Account Tab -->
-        <div class="tab-pane fade" id="pills-account" role="tabpanel">
-            <div class="max-w-700 mx-auto">
-                <div class="instruction-card p-5 text-center">
-                    <div class="icon-box bg-rose-light mx-auto mb-4" style="width: 80px; height: 80px; font-size: 2.5rem;">
-                        <i class="fas fa-key"></i>
+        <!-- Settings & Data Tab -->
+        <div class="tab-pane fade" id="pills-settings" role="tabpanel">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="instruction-card p-4 h-100">
+                        <h5 class="fw-bold mb-4">Cài đặt Hệ thống Mới</h5>
+                        <p class="text-slate-600 mb-4">
+                            Truy cập menu <strong>Cài đặt hệ thống</strong> để sử dụng các công cụ quản trị dữ liệu nâng cao.
+                        </p>
+
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex align-items-start gap-3 p-3 bg-secondary bg-opacity-10 rounded-3">
+                                <div class="fs-4 text-primary"><i class="fas fa-cloud-download-alt"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Sao lưu Dữ liệu (Backup)</h6>
+                                    <p class="text-sm text-muted mb-0">Tải xuống toàn bộ cơ sở dữ liệu dưới dạng file .SQL. Dùng để dự phòng khi hệ thống gặp sự cố.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start gap-3 p-3 bg-success bg-opacity-10 rounded-3">
+                                <div class="fs-4 text-success"><i class="fas fa-file-excel"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Nhập liệu từ Excel (Import)</h6>
+                                    <p class="text-sm text-muted mb-0">
+                                        Upload file Excel theo mẫu để thêm hàng loạt PR. Hệ thống tự động:
+                                        <ul class="mb-0 ps-3 mt-1" style="font-size: 0.85rem;">
+                                            <li>Tạo mới Khoa/Phòng nếu chưa có.</li>
+                                            <li>Tạo tài khoản đăng nhập cho Khoa mới.</li>
+                                            <li>Chuẩn hóa định dạng ngày tháng.</li>
+                                        </ul>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h4 class="fw-bold mb-3">Bảo mật & Tài khoản</h4>
-                    <p class="text-slate-600 mb-4 px-lg-5">
-                        Để đảm bảo tính an toàn cho hệ thống quản lý, Admin nên cập nhật mật khẩu ít nhất 3 tháng một lần và không chia sẻ tài khoản cho người không có thẩm quyền.
-                    </p>
-                    <div class="d-flex justify-content-center gap-3">
-                        <a href="{{ route('admin.change-password') }}" class="btn btn-primary px-4 py-2 rounded-pill fw-bold" style="background: var(--primary-gradient); border: none;">
-                            <i class="fas fa-lock me-2"></i>Đổi mật khẩu ngay
-                        </a>
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-bold">
-                            Về bảng điều khiển
-                        </a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="instruction-card p-5 text-center d-flex flex-column justify-content-center">
+                        <div class="icon-box bg-rose-light mx-auto mb-4" style="width: 80px; height: 80px; font-size: 2.5rem;">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">An toàn Dữ liệu</h4>
+                        <p class="text-slate-600 mb-4 px-lg-4">
+                            Khuyến nghị Admin thực hiện <strong>Sao lưu dữ liệu định kỳ hàng tuần</strong> và thay đổi mật khẩu quản trị ít nhất 90 ngày một lần để đảm bảo an toàn tuyệt đối.
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="{{ route('admin.settings') }}" class="btn btn-primary px-4 py-2 rounded-pill fw-bold" style="background: var(--primary-gradient); border: none;">
+                                <i class="fas fa-cog me-2"></i>Đi tới Cài đặt
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -377,8 +405,7 @@
     <!-- Footer Help -->
     <div class="text-center mt-5 pt-4 border-top">
         <p class="text-slate-400 small">
-            Nếu gặp khó khăn trong quá trình sử dụng, vui lòng liên hệ <strong>Phòng Công nghệ Thông tin</strong> để được hỗ trợ.<br>
-            &copy; {{ date('Y') }} Bệnh Viện Đa Khoa Tâm Trí Cao Lãnh.
+            &copy; {{ date('Y') }} <strong>Bệnh Viện Đa Khoa Tâm Trí Cao Lãnh</strong> - Hệ thống quản lý Mua sắm.
         </p>
     </div>
 </div>
